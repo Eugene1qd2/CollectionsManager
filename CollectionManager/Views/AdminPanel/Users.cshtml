@@ -1,0 +1,63 @@
+﻿@model IEnumerable<CollectionManager.Models.User.EntireUserViewModel>
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<h1>Users</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserEmail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserPhone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserRole)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsBlocked)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserEmail)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserPhone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserRole)
+                </td>
+                <td>
+                    @(item.IsBlocked?"Blocked":"Active")
+                </td>
+                <td>
+                    <a class="btn btn-danger" asp-action="ChangeLockState" asp-route-id="@item.Id">@(item.IsBlocked?"Unblock":"Block")</a>
+                    <a class="btn btn-dark" asp-action="ChangeAdminRoleState" asp-route-id="@item.Id">@(item.UserRole=="user"?"Make admin":"Un op")</a>
+                    <a class="btn btn-info" asp-action="ViewUserProfile" asp-route-id="@item.Id">View</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
