@@ -33,10 +33,10 @@ namespace CollectionManager.Controllers
             await _administrateUsersService.SwitchUserLockStateAsync(Id);
             return RedirectToAction("Users", "AdminPanel");
         }
-
+        [Authorize(Policy = "AdminPolicy")]
         public async Task<IActionResult> ViewUserProfile(string Id)
         {
-            return RedirectToAction("Profile", "User",Id);
+            return RedirectToAction("Profile", "UserCollections", Id);
         }
     }
 }

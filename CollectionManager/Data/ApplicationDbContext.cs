@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using CollectionManager.Models.User;
+using CollectionManager.Models.Collection;
 
 namespace CollectionManager.Data
 {
@@ -11,6 +12,7 @@ namespace CollectionManager.Data
             : base(options)
         {
         }
-        public DbSet<CollectionManager.Models.User.EntireUserViewModel>? EntireUserViewModel { get; set; }
+        public DbSet<EntireUserViewModel>? EntireUserViewModel { get; set; }
+        public DbSet<UserCollectionModel>? UserCollections { get; set; }
     }
 }

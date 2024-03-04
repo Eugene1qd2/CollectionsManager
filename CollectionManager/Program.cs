@@ -1,11 +1,16 @@
 using CollectionManager.Authorization;
 using CollectionManager.Data;
+using CollectionManager.Data.Repositories;
+using CollectionManager.Data.Interfaces;
+using CollectionManager.Services.Interfaces;
 using CollectionManager.Services;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Collections;
+using CollectionManager.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -51,6 +56,9 @@ builder.Services.AddAuthentication().AddGoogle(googleOptions =>
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
+
+builder.Services.AddScoped<ICollectionsRepository, CollectionsRepository>();
+builder.Services.AddScoped<ICollectionService, CollectionService>();
 
 var app = builder.Build();
 

@@ -55,7 +55,7 @@
                 <td>
                     <a class="btn btn-danger" asp-action="ChangeLockState" asp-route-id="@item.Id">@(item.IsBlocked?"Unblock":"Block")</a>
                     <a class="btn btn-dark" asp-action="ChangeAdminRoleState" asp-route-id="@item.Id">@(item.UserRole=="user"?"Make admin":"Un op")</a>
-                    <a class="btn btn-info" asp-action="ViewUserProfile" asp-route-id="@item.Id">View</a>
+                    <a class="btn btn-info" asp-action="Profile" asp-route-id="@item.Id" asp-controller="UserCollections">View</a>
                 </td>
             </tr>
         }
