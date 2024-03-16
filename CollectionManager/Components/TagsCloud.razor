@@ -1,0 +1,90 @@
+﻿@inject ITagService tagService
+
+<div class="container border-1 rounded-2 card">
+    <h4>TagsCloud</h4>
+    <input class="form-control" type="text" placeholder="Input tags" @bind-value="SearchTagText" @bind-value:event="oninput" @onchange="@UpdateAvailableTags" @onkeypress="@UpdateAvailableTags" />
+    <input class="form-control" type="button" value="Add tag" @onclick="AddUserTag" />
+    <div class="container ">
+        <p class="p-0 m-0">Tags:</p>
+        <div class="d-flex flex-wrap">
+            @foreach (var tag in availableTags)
+            {
+                <input type="button" @onclick="()=>{ IncludeTag(tag.TagModelId); }" class="card border-1 rounded-pill px-2 m-1" value="@tag.Tag">
+            }
+        </div>
+        <p class="p-0 m-0">Selected tags:</p>
+        <div class="d-flex flex-wrap form-group" style="min-height:10px">
+            @for (int i = 0; i < selectedTags.Count; i++)
+            {
+                var s = i;
+                <input id="Tags_@(i)__Tag" name="Tags[@(i)].Tag" type="button" @onclick="()=>{ ExcludeTag(selectedTags[s].TagModelId); }" class="card border-1 rounded-pill px-2 m-1" value="@selectedTags[i].Tag">
+                <input id="Tags_@(i)__Tag" name="Tags[@(i)].Tag" value="@selectedTags[i].Tag" hidden>
+                <input id="Tags_@(i)__AbsTag" name="Tags[@(i)].AbsTag" value="@selectedTags[i].AbsTag" hidden>
+                <input id="Tags_@(i)__TagModelId" name="Tags[@(i)].TagModelId" value="@selectedTags[i].TagModelId" hidden>
+                <input id="Tags_@(i)__IsUserTag" name="Tags[@(i)].IsUserTag" type="number" value="@(selectedTags[i].IsUserTag)" hidden />
+            }
+        </div>
+    </div>
+</div>
+@code {
+    public IEnumerable<TagModel> allTags { get; set; } = new List<TagModel>();
+    public IEnumerable<TagModel> availableTags { get; set; } = new List<TagModel>();
+
+    [Parameter] public List<TagModel> selectedTags { get; set; } = new List<TagModel>();
+
+    public string SearchTagText { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        SearchTagText = string.Empty;
+        allTags = await tagService.GetAll();
+        await UpdateAvailableTags();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+    }
+
+    public async Task UpdateAvailableTags()
+    {
+        if (SearchTagText != null)
+            availableTags = allTags.Where(x => x.AbsTag.Contains(SearchTagText.Trim().ToUpper())).Except(selectedTags).Take(30);
+        else
+            availableTags = allTags.Except(selectedTags).Take(30);
+    }
+
+    public async Task IncludeTag(string tagId)
+    {
+        var itemToAdd = allTags.First(x => x.TagModelId == tagId);
+        if (itemToAdd != null)
+        {
+            selectedTags.Add(itemToAdd);
+            await UpdateAvailableTags();
+        }
+    }
+
+    public async Task ExcludeTag(string tagId)
+    {
+        var itemToDelete = selectedTags.First(x => x.TagModelId == tagId);
+        if (itemToDelete != null)
+        {
+            selectedTags.Remove(itemToDelete);
+            await UpdateAvailableTags();
+        }
+    }
+
+    private async Task AddUserTag(MouseEventArgs e)
+    {
+        SearchTagText = SearchTagText.Trim();
+        if (!string.IsNullOrEmpty(SearchTagText))
+        {
+            var ftag = availableTags.First();
+            if (ftag.AbsTag == SearchTagText.ToUpper())
+                await IncludeTag(ftag.TagModelId);
+            else
+                selectedTags.Add(new TagModel(SearchTagText, 1));
+            SearchTagText = string.Empty;
+            await UpdateAvailableTags();
+        }
+    }
+}

@@ -7,29 +7,72 @@ namespace CollectionManager.Services
 {
     public class CollectionService : ICollectionService
     {
-        ICollectionsRepository _repository;
-        public CollectionService(ICollectionsRepository repository)
+        ICollectionsRepository _collectionsRepository;
+        ICloudStorageService _cloudStorageService;
+        public CollectionService(ICollectionsRepository repository,ICloudStorageService cloudStorageService)
         {
-            _repository = repository;
+            _collectionsRepository = repository;
+            _cloudStorageService = cloudStorageService;
         }
 
-        public async Task Create(UserCollectionModel model)
+        public async Task Create(EntireCollectionViewModel model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException("model");
             }
-            await _repository.Create(model);
+            
+            await _collectionsRepository.Create(model);
+        }
+
+        public async Task CreateData(DataCollectionViewModel model)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException("model");
+            }
+            if (model.ImageFile != null)
+            {
+                model.CloudPictureName = ICloudStorageService.FormFileName(model.Title, model.ImageFile.FileName);
+                var pictureLink = await _cloudStorageService.UploadFile(model.ImageFile, model.CloudPictureName);
+                model.PictureLink = pictureLink;
+            }
+            await _collectionsRepository.Create(model);
         }
 
         public async Task DeleteById(string objId)
         {
-            throw new NotImplementedException();
+            await _collectionsRepository.DeleteById(objId);
         }
 
-        public async Task<IEnumerable<UserCollectionModel>> GetByUserId(string userId)
+        public async Task Edit(EntireCollectionViewModel model)
         {
-            return await _repository.GetByUserId(userId);
+            await _collectionsRepository.Update(model);
+        }
+
+        public async Task EditData(DataCollectionViewModel model)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException("model");
+            }
+            if (model.ImageFile != null)
+            {
+                model.CloudPictureName = ICloudStorageService.FormFileName(model.Title, model.ImageFile.FileName);
+                var pictureLink = await _cloudStorageService.UploadFile(model.ImageFile, model.CloudPictureName);
+                model.PictureLink = pictureLink;
+            }
+            await _collectionsRepository.Update(model);
+        } 
+
+        public async Task<EntireCollectionViewModel> GetById(string objId)
+        {
+            return await _collectionsRepository.GetById(objId);
+        }
+
+        public async Task<IEnumerable<EntireCollectionViewModel>> GetByUserId(string userId)
+        {
+            return await _collectionsRepository.GetByUserId(userId);
         }
     }
 }

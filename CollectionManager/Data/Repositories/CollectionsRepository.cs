@@ -11,42 +11,54 @@ namespace CollectionManager.Data.Repositories
         {
             _context = context;
         }
-        public async Task<bool> Create(UserCollectionModel obj)
+        public async Task<bool> Create(EntireCollectionViewModel obj)
         {
-            await _context.UserCollections.AddAsync(obj);
+            var result=await _context.UserCollections.AddAsync(obj);
             await _context.SaveChangesAsync();
-            return true;
+            return result.State==EntityState.Added;
         }
 
-        public Task<bool> Delete(UserCollectionModel obj)
+        public async Task<bool> Delete(EntireCollectionViewModel obj)
+        {
+            if (obj == null)
+                return false;
+            var result = _context.Remove(obj);
+            await _context.SaveChangesAsync();
+            return result.State == EntityState.Deleted;
+        }
+
+        public async Task<bool> DeleteById(string Id)
+        {
+            var model= await _context.UserCollections.FirstAsync(x => x.EntireCollectionViewModelId == Id);
+            if (model==null)
+                return false;
+            var result=_context.Remove(model);
+            await _context.SaveChangesAsync();
+            return result.State== EntityState.Deleted;
+        }
+
+        public Task<IEnumerable<EntireCollectionViewModel>> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteById(string Id)
+        public async Task<EntireCollectionViewModel> GetById(string Id)
         {
-            throw new NotImplementedException();
+            var result=await _context.UserCollections.FirstAsync(x=>x.EntireCollectionViewModelId==Id);
+            return result;
         }
 
-        public Task<IEnumerable<UserCollectionModel>> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<UserCollectionModel> GetById(string Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IEnumerable<UserCollectionModel>> GetByUserId(string userId)
+        public async Task<IEnumerable<EntireCollectionViewModel>> GetByUserId(string userId)
         {
             var result =await _context.UserCollections.Where(x=>x.OwnerId== userId).ToListAsync();
             return result;
         }
 
-        public Task<bool> Update(UserCollectionModel obj)
+        public async Task<bool> Update(EntireCollectionViewModel obj)
         {
-            throw new NotImplementedException();
+            var result=_context.Update(obj);
+            await _context.SaveChangesAsync();
+            return result.State == EntityState.Modified;
         }
     }
 }

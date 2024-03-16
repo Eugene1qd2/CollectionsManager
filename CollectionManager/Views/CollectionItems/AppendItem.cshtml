@@ -1,0 +1,183 @@
+﻿@model CollectionManager.Models.Collection.CollectionItemDataModel
+
+@{
+    ViewData["Title"] = "AppendItem";
+}
+
+<div class="d-flex justify-content-between">
+    <h1>Create new item</h1>
+    <div>
+        <a class="btn btn-primary" asp-action="View" asp-controller="Collection" asp-route-id="@Model.CollectionId">Back to List</a>
+    </div>
+</div>
+<hr />
+<div class="container p-0">
+    <form asp-action="AppendItem">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <input asp-for="EntireItemViewModelId" class="form-control" hidden />
+            <span asp-validation-for="EntireItemViewModelId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input asp-for="CollectionId" class="form-control" hidden />
+            <span asp-validation-for="CollectionId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input asp-for="collection.EntireCollectionViewModelId" class="form-control" hidden />
+            <span asp-validation-for="collection.EntireCollectionViewModelId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input asp-for="collection.OwnerId" class="form-control" hidden />
+            <span asp-validation-for="collection.OwnerId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input asp-for="collection.Theme" class="form-control" hidden />
+            <span asp-validation-for="collection.Theme" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input asp-for="collection" class="form-control" hidden value="@Model.collection" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="d-flex w-100 justify-content-between flex-wrap">
+            <div class="w-auto p-0 me-2" style="min-width:100px">
+                @if (Model.collection.CustomStringState1 == CollectionFieldState.TRUE)
+                {
+                    <div class="form-group">
+                        @Html.DisplayFor(model => model.collection.CustomStringName1)
+                        <input asp-for="CustomStringField1" class="form-control" />
+                        <span asp-validation-for="CustomStringField1" class="text-danger"></span>
+                    </div>
+                }
+                @if (Model.collection.CustomStringState2 == CollectionFieldState.TRUE)
+                {
+                    <div class="form-group">
+                        @Html.DisplayFor(model => model.collection.CustomStringName2)
+                        <input asp-for="CustomStringField2" class="form-control" />
+                        <span asp-validation-for="CustomStringField2" class="text-danger"></span>
+                    </div>
+                }
+                @if (Model.collection.CustomStringState3 == CollectionFieldState.TRUE)
+                {
+                    <div class="form-group">
+                        @Html.DisplayFor(model => model.collection.CustomStringName3)
+                        <input asp-for="CustomStringField3" class="form-control" />
+                        <span asp-validation-for="CustomStringField3" class="text-danger"></span>
+                    </div>
+                }
+            </div>
+            <div class="w-auto p-0 me-2" style="min-width:100px">
+                @if (Model.collection.CustomIntState1 == CollectionFieldState.TRUE)
+                {
+                    <div class="form-group">
+                        @Html.DisplayFor(model => model.collection.CustomIntName1)
+                        <input asp-for="CustomIntField1" class="form-control" />
+                        <span asp-validation-for="CustomIntField1" class="text-danger"></span>
+                    </div>
+                }
+                @if (Model.collection.CustomIntState2 == CollectionFieldState.TRUE)
+                {
+                    <div class="form-group">
+                        @Html.DisplayFor(model => model.collection.CustomIntName2)
+                        <input asp-for="CustomIntField2" class="form-control" />
+                        <span asp-validation-for="CustomIntField2" class="text-danger"></span>
+                    </div>
+                }
+                @if (Model.collection.CustomIntState3 == CollectionFieldState.TRUE)
+                {
+                    <div class="form-group">
+                        @Html.DisplayFor(model => model.collection.CustomIntName3)
+                        <input asp-for="CustomIntField3" class="form-control" />
+                        <span asp-validation-for="CustomIntField3" class="text-danger"></span>
+                    </div>
+                }
+            </div>
+            <div class="w-auto px-0 py-3 me-2" style="min-width:100px">
+                @if (Model.collection.CustomBoolState1 == CollectionFieldState.TRUE)
+                {
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" asp-for="CustomBoolField1" /> @Html.DisplayFor(model => model.collection.CustomBoolName1)
+                        </label>
+                    </div>
+                }
+                @if (Model.collection.CustomBoolState2 == CollectionFieldState.TRUE)
+                {
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" asp-for="CustomBoolField2" /> @Html.DisplayFor(model => model.collection.CustomBoolName2)
+                        </label>
+                    </div>
+                }
+                @if (Model.collection.CustomBoolState3 == CollectionFieldState.TRUE)
+                {
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" asp-for="CustomBoolField3" /> @Html.DisplayFor(model => model.collection.CustomBoolName3)
+                        </label>
+                    </div>
+                }
+            </div>
+            <div class="w-auto p-0" style="min-width:100px">
+                @if (Model.collection.CustomDateState1 == CollectionFieldState.TRUE)
+                {
+                    <div class="form-group">
+                        @Html.DisplayFor(model => model.collection.CustomDateName1)
+                        <input asp-for="CustomDateField1" class="form-control" />
+                        <span asp-validation-for="CustomDateField1" class="text-danger"></span>
+                    </div>
+                }
+                @if (Model.collection.CustomDateState2 == CollectionFieldState.TRUE)
+                {
+                    <div class="form-group">
+                        @Html.DisplayFor(model => model.collection.CustomDateName2)
+                        <input asp-for="CustomDateField2" class="form-control" />
+                        <span asp-validation-for="CustomDateField2" class="text-danger"></span>
+                    </div>
+                }
+                @if (Model.collection.CustomDateState3 == CollectionFieldState.TRUE)
+                {
+                    <div class="form-group">
+                        @Html.DisplayFor(model => model.collection.CustomDateName3)
+                        <input asp-for="CustomDateField3" class="form-control" />
+                        <span asp-validation-for="CustomDateField3" class="text-danger"></span>
+                    </div>
+                }
+            </div>
+            <div class="w-100 p-0 mb-2" style="min-width:100px">
+
+                @if (Model.collection.CustomTextState1 == CollectionFieldState.TRUE)
+                {
+                    <div class="form-group">
+                        @Html.DisplayFor(model => model.collection.CustomTextName1)
+                        <textarea asp-for="CustomTextField1" class="form-control"></textarea>
+                        <span asp-validation-for="CustomTextField1" class="text-danger"></span>
+                    </div>
+                }
+                @if (Model.collection.CustomTextState2 == CollectionFieldState.TRUE)
+                {
+                    <div class="form-group">
+                        @Html.DisplayFor(model => model.collection.CustomTextName2)
+                        <textarea asp-for="CustomTextField2" class="form-control"></textarea>
+                        <span asp-validation-for="CustomTextField2" class="text-danger"></span>
+                    </div>
+                }
+                @if (Model.collection.CustomTextState3 == CollectionFieldState.TRUE)
+                {
+                    <div class="form-group">
+                        @Html.DisplayFor(model => model.collection.CustomTextName3)
+                        <textarea asp-for="CustomTextField3" class="form-control"></textarea>
+                        <span asp-validation-for="CustomTextField3" class="text-danger"></span>
+                    </div>
+                }
+            </div>
+            <component type="typeof(TagsCloud)" render-mode="ServerPrerendered" param-selectedTags="Model.Tags" />
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </form>
+</div>

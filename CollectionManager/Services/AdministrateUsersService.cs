@@ -12,6 +12,22 @@ namespace CollectionManager.Services
         {
             _userManager = userManager;
         }
+        public async Task<EntireUserViewModel> GetUserByIdAsync(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+                return null;
+            var userRole = await _userManager.GetRolesAsync(user);
+            return new EntireUserViewModel(user, userRole.FirstOrDefault());
+        }
+
+        public async Task DeleteUserByIdAsync(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user != null)
+                await _userManager.DeleteAsync(user);
+        }
+
         public async Task<IEnumerable<EntireUserViewModel>> GetUsersDataAsync()
         {
             List<EntireUserViewModel> users = new List<EntireUserViewModel>();

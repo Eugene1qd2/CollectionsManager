@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
 using CollectionManager.Services.Interfaces;
+using AspNetCoreWebApp.CloudStorage;
+using System.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -42,6 +44,7 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddTransient<IAuthorizationHandler, AdminUserRequirementHandler>();
 builder.Services.AddTransient<IAuthorizationHandler, UserUnlockedRequirementHandler>();
+builder.Services.AddScoped<IsOwnerAuthorizer>();
 
 builder.Services.Configure<SecurityStampValidatorOptions>(options =>
 {
@@ -60,6 +63,17 @@ builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
 builder.Services.AddScoped<ICollectionsRepository, CollectionsRepository>();
 builder.Services.AddScoped<ICollectionService, CollectionService>();
 
+builder.Services.AddScoped<ICollectionItemsRepository, CollectionItemsRepository>();
+builder.Services.AddScoped<ICollectionItemService, CollectionItemService>();
+
+builder.Services.AddScoped<ITagRepository, TagRepository>();
+builder.Services.AddScoped<ITagService, TagService>();
+
+builder.Services.AddSingleton<ICloudStorage, GoogleCloudRepository>();
+builder.Services.AddSingleton<ICloudStorageService, CloudStorageService>();
+
+//blazor test
+builder.Services.AddServerSideBlazor();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -84,7 +98,9 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}/{opt_id?}");
 app.MapRazorPages();
+//blazor test
+app.MapBlazorHub();
 
 app.Run();

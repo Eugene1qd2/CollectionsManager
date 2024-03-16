@@ -5,6 +5,7 @@ using CollectionManager.Models.User;
 using CollectionManager.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace CollectionManager.Services
 {
@@ -38,6 +39,19 @@ namespace CollectionManager.Services
             }
             else
                 return null;
+        }
+
+        public async Task<MinUserViewModel> GetMinUser(ClaimsPrincipal User)
+        {
+            if (User == null)
+                return null;
+            MinUserViewModel user=new MinUserViewModel()
+            {
+                Id=User.FindFirstValue(ClaimTypes.NameIdentifier),
+                UserName=User.FindFirstValue(ClaimTypes.Name),
+                Role=User.FindFirstValue(ClaimTypes.Role),
+            };
+            return user;
         }
     }
 }

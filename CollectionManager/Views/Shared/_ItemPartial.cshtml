@@ -1,0 +1,23 @@
+﻿@model CollectionItemDataPair
+  
+<form method="get" asp-action="View" asp-controller="CollectionItems" asp-route-id="@Model.item.EntireItemViewModelId">
+    <button class="container card border-1 rounded-2 px-3 py-2 my-1 btn btn-dark" type="submit">
+        <h3>
+            @Model.item.Name
+        </h3>
+        @if (Model.collection.CustomStringState1 == CollectionFieldState.TRUE)
+        {
+            <div class="d-flex">
+                <dt class="me-1">@Html.DisplayFor(model => model.collection.CustomStringName1):</dt>
+                <dd>@Html.DisplayFor(model => model.item.CustomStringField1)</dd>
+            </div>
+        }
+        @if (Model.collection.CustomTextState1 == CollectionFieldState.TRUE)
+        {
+            <div class="d-flex">
+                <dt class="me-1">@Html.DisplayFor(model => model.collection.CustomTextName1):</dt>
+                <dd>@Markdown.ParseHtmlString(HtmlUtils.SanitizeHtml(Model.item.CustomTextField1))</dd>
+            </div>
+        }
+    </button>
+</form>

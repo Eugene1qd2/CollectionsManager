@@ -2,10 +2,10 @@
 
 namespace CollectionManager.Data.Interfaces
 {
-    public interface ICollectionsRepository:IBaseRepository<UserCollectionModel>
+    public interface ICollectionsRepository:IBaseRepository<EntireCollectionViewModel>
     {
-        Task<bool> Update(UserCollectionModel obj);
+        Task<bool> Update(EntireCollectionViewModel obj);
         Task<bool> DeleteById(string Id);
-        Task<IEnumerable<UserCollectionModel>> GetByUserId(string userId);
+        Task<IEnumerable<EntireCollectionViewModel>> GetByUserId(string userId);
     }
 }

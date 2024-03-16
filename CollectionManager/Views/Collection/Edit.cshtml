@@ -1,0 +1,169 @@
+﻿@model CollectionManager.Models.Collection.DataCollectionViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Dictionary<System.String, string> route = new Dictionary<string, string>();
+    route.Add("Id", Model.OwnerId);
+    route.Add("opt_Id", Model.EntireCollectionViewModelId);
+}
+
+<div class="d-flex justify-content-between">
+    <h1>Edit existing collection!</h1>
+    <div>
+        <a class="btn btn-primary" asp-action="Profile" asp-controller="UserCollections" asp-route-id="@route["Id"]">Back to List</a>
+    </div>
+</div>
+
+<hr />
+<div class="row">
+    <div class="container">
+        <form asp-action="Edit" enctype="multipart/form-data" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="d-flex">
+                <div class="w-100 me-3">
+                    <div class="form-group">
+                        <input asp-for="EntireCollectionViewModelId" class="form-control" hidden />
+                        <span asp-validation-for="EntireCollectionViewModelId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input asp-for="OwnerId" class="form-control" hidden />
+                        <span asp-validation-for="OwnerId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Title" class="control-label"></label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Theme" class="control-label"></label>
+                        <select asp-for="Theme" class="form-control">
+                            <option value="Books">Books</option>
+                            <option value="Anime">Anime</option>
+                            <option value="Cars">Cars</option>
+                        </select>
+                        <span asp-validation-for="Theme" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input asp-for="PictureLink" class="form-control" hidden />
+                        <span asp-validation-for="PictureLink" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ImageFile" class="control-label"></label>
+                        <input asp-for="ImageFile" type="file" class="form-control" />
+                        <span asp-validation-for="ImageFile" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group w-100">
+                    <label asp-for="Description" class="control-label"></label>
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between flex-wrap">
+                <div class="d-flex flex-column p-0 align-items-center">
+                    <p class="mb-1">String fields</p>
+                    <div class="d-flex justify-content-between w-100">
+                        <input type="button" class="btn btn-primary m-1" id="custom-string-btn-add" onclick="AddNewField('CustomStringName','custom-string')" value="Add">
+                        <input type="button" class="btn btn-danger m-1" id="custom-string-btn-remove" onclick="RemoveField('CustomStringName','custom-string')" value="Remove">
+                    </div>
+                    <div id="custom-string-container" class="p-1">
+                        @if (Model.CustomStringState1 == CollectionFieldState.TRUE)
+                        {
+                            <input asp-for="CustomStringName1" class="form-control custom-string" placeholder="Input field name" />
+                        }@if (Model.CustomStringState2 == CollectionFieldState.TRUE)
+                        {
+                            <input asp-for="CustomStringName2" class="form-control custom-string" placeholder="Input field name" />
+                        }@if (Model.CustomStringState3 == CollectionFieldState.TRUE)
+                        {
+                            <input asp-for="CustomStringName3" class="form-control custom-string" placeholder="Input field name" />
+                        }
+                    </div>
+                </div>
+                <div class="d-flex flex-column p-0 align-items-center">
+                    <p class="mb-1">Int fields</p>
+                    <div class="d-flex justify-content-between w-100">
+                        <input type="button" class="btn btn-primary m-1" id="custom-int-btn-add" onclick="AddNewField('CustomIntName','custom-int')" value="Add">
+                        <input type="button" class="btn btn-danger m-1" id="custom-int-btn-remove" onclick="RemoveField('CustomIntName','custom-int')" value="Remove">
+                    </div>
+                    <div id="custom-int-container" class="p-1">
+                        @if (Model.CustomIntState1 == CollectionFieldState.TRUE)
+                        {
+                            <input asp-for="CustomIntName1" class="form-control custom-int" placeholder="Input field name" />
+                        }@if (Model.CustomIntState2 == CollectionFieldState.TRUE)
+                        {
+                            <input asp-for="CustomIntName2" class="form-control custom-int" placeholder="Input field name" />
+                        }@if (Model.CustomIntState3 == CollectionFieldState.TRUE)
+                        {
+                            <input asp-for="CustomIntName3" class="form-control custom-int" placeholder="Input field name" />
+                        }
+                    </div>
+                </div>
+                <div class="d-flex flex-column p-0 align-items-center">
+                    <p class=" mb-1">Text fields</p>
+                    <div class="d-flex justify-content-between w-100">
+                        <input type="button" class="btn btn-primary m-1" id="custom-text-btn-add" onclick="AddNewField('CustomTextName','custom-text')" value="Add">
+                        <input type="button" class="btn btn-danger m-1" id="custom-text-btn-remove" onclick="RemoveField('CustomTextName','custom-text')" value="Remove">
+                    </div>
+                    <div id="custom-text-container" class="p-1">
+                        @if (Model.CustomTextState1 == CollectionFieldState.TRUE)
+                        {
+                            <input asp-for="CustomTextName1" class="form-control custom-text" placeholder="Input field name" />
+                        }@if (Model.CustomTextState2 == CollectionFieldState.TRUE)
+                        {
+                            <input asp-for="CustomTextName2" class="form-control custom-text" placeholder="Input field name" />
+                        }@if (Model.CustomTextState3 == CollectionFieldState.TRUE)
+                        {
+                            <input asp-for="CustomTextName3" class="form-control custom-text" placeholder="Input field name" />
+                        }
+                    </div>
+                </div>
+                <div class="d-flex flex-column p-0 align-items-center">
+                    <p class="mb-1">Bool fields</p>
+                    <div class="d-flex justify-content-between w-100">
+                        <input type="button" class="btn btn-primary m-1" id="custom-bool-btn-add" onclick="AddNewField('CustomBoolName','custom-bool')" value="Add">
+                        <input type="button" class="btn btn-danger m-1" id="custom-bool-btn-remove" onclick="RemoveField('CustomBoolName','custom-bool')" value="Remove">
+                    </div>
+                    <div id="custom-bool-container" class="p-1">
+                        @if (Model.CustomBoolState1 == CollectionFieldState.TRUE)
+                        {
+                            <input asp-for="CustomBoolName1" class="form-control custom-bool" placeholder="Input field name" />
+                        }@if (Model.CustomBoolState2 == CollectionFieldState.TRUE)
+                        {
+                            <input asp-for="CustomBoolName2" class="form-control custom-bool" placeholder="Input field name" />
+                        }@if (Model.CustomBoolState3 == CollectionFieldState.TRUE)
+                        {
+                            <input asp-for="CustomBoolName3" class="form-control custom-bool" placeholder="Input field name" />
+                        }
+                    </div>
+                </div>
+                <div class="d-flex flex-column p-0 align-items-center">
+                    <p class="mb-1">Date fields</p>
+                    <div class="d-flex justify-content-between w-100">
+                        <input type="button" class="btn btn-primary m-1" id="custom-date-btn-add" onclick="AddNewField('CustomDateName','custom-date')" value="Add">
+                        <input type="button" class="btn btn-danger m-1" id="custom-date-btn-remove" onclick="RemoveField('CustomDateName','custom-date')" value="Remove">
+                    </div>
+                    <div id="custom-date-container" class="p-1">
+                        @if (Model.CustomDateState1 == CollectionFieldState.TRUE)
+                        {
+                            <input asp-for="CustomDateName1" class="form-control custom-date" placeholder="Input field name" />
+                        }@if (Model.CustomDateState2 == CollectionFieldState.TRUE)
+                        {
+                            <input asp-for="CustomDateName2" class="form-control custom-date" placeholder="Input field name" />
+                        }@if (Model.CustomDateState3 == CollectionFieldState.TRUE)
+                        {
+                            <input asp-for="CustomDateName3" class="form-control custom-date" placeholder="Input field name" />
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Confirm edition" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+

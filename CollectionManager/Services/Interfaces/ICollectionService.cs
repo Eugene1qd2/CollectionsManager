@@ -4,9 +4,12 @@ namespace CollectionManager.Services.Interfaces
 {
     public interface ICollectionService
     {
-        public Task<IEnumerable<UserCollectionModel>> GetByUserId(string userId);
-        public Task Create(UserCollectionModel model);
+        public Task<IEnumerable<EntireCollectionViewModel>> GetByUserId(string userId);
+        public Task<EntireCollectionViewModel> GetById(string objId);
+        public Task Create(EntireCollectionViewModel model);
+        public Task CreateData(DataCollectionViewModel model);
+        public Task Edit(EntireCollectionViewModel model);
+        public Task EditData(DataCollectionViewModel model);
         public Task DeleteById(string objId);
-
     }
 }

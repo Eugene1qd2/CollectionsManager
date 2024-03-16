@@ -1,5 +1,8 @@
-﻿namespace CollectionManager.Models.Collection
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace CollectionManager.Models.Collection
 {
+    [Keyless]
     public class CollectionFields
     {
         public List<string> intFieldNames { get; set; }

@@ -1,0 +1,146 @@
+﻿@model CollectionManager.Models.Collection.CollectionItemDataPair
+
+@{
+    ViewData["Title"] = "View";
+}
+<a asp-action="Profile" asp-controller="UserCollections" asp-route-id="@Model.collection.OwnerId">@Model.OwnerName</a>\
+<a asp-action="View" asp-controller="Collection" asp-route-id="@Model.collection.EntireCollectionViewModelId">@Model.collection.Title</a>\
+<a asp-action="View" asp-controller="CollectionItems" asp-route-id="@Model.item.EntireItemViewModelId">@Model.item.Name</a>
+<div class="d-flex justify-content-between">
+    <h2>@Model.item.Name</h2>
+    <div>
+        <a class="btn btn-primary" asp-action="EditItem" asp-controller="CollectionItems" asp-route-id="@Model.item.EntireItemViewModelId">Edit</a>
+        <a class="btn btn-danger" asp-action="DeleteItem" asp-controller="CollectionItems" asp-route-id="@Model.item.EntireItemViewModelId">Delete</a>
+    </div>
+</div>
+<hr />
+<div>
+    <div class="d-flex w-100 justify-content-between flex-wrap">
+        <div class="w-auto p-0 me-2" style="min-width:100px">
+            @if (Model.collection.CustomStringState1 == CollectionFieldState.TRUE)
+            {
+                <div class="form-group d-flex">
+                    <dt class="me-1">@Html.DisplayFor(model => model.collection.CustomStringName1) </dt>
+                    <dd>@Html.DisplayFor(model => model.item.CustomStringField1)</dd>
+                </div>
+            }
+            @if (Model.collection.CustomStringState2 == CollectionFieldState.TRUE)
+            {
+                <div class="form-group d-flex">
+                    <dt class="me-1">@Html.DisplayFor(model => model.collection.CustomStringName2) </dt>
+                    <dd>@Html.DisplayFor(model => model.item.CustomStringField2)</dd>
+                </div>
+            }
+            @if (Model.collection.CustomStringState3 == CollectionFieldState.TRUE)
+            {
+                <div class="form-group d-flex">
+                    <dt class="me-1">@Html.DisplayFor(model => model.collection.CustomStringName3) </dt>
+                    <dd>@Html.DisplayFor(model => model.item.CustomStringField3)</dd>
+                </div>
+            }
+        </div>
+        <div class="w-auto p-0 me-2" style="min-width:100px">
+            @if (Model.collection.CustomIntState1 == CollectionFieldState.TRUE)
+            {
+                <div class="form-group d-flex">
+                    <dt class="me-1">@Html.DisplayFor(model => model.collection.CustomIntName1)</dt>
+                    <dd>@Html.DisplayFor(model => model.item.CustomIntField1)</dd>
+                </div>
+            }
+            @if (Model.collection.CustomIntState2 == CollectionFieldState.TRUE)
+            {
+                <div class="form-group d-flex">
+                    <dt class="me-1">@Html.DisplayFor(model => model.collection.CustomIntName2)</dt>
+                    <dd>@Html.DisplayFor(model => model.item.CustomIntField2)</dd>
+                </div>
+            }
+            @if (Model.collection.CustomIntState3 == CollectionFieldState.TRUE)
+            {
+                <div class="form-group d-flex">
+                    <dt class="me-1">@Html.DisplayFor(model => model.collection.CustomIntName3)</dt>
+                    <dd>@Html.DisplayFor(model => model.item.CustomIntField3)</dd>
+                </div>
+            }
+        </div>
+        <div class="w-auto px-0 me-2" style="min-width:100px">
+            @if (Model.collection.CustomBoolState1 == CollectionFieldState.TRUE)
+            {
+                <div class="form-group d-flex">
+                    <dt class="me-2">@Html.DisplayFor(model => model.collection.CustomBoolName1)</dt>
+                    <dd>@Html.DisplayFor(model => model.item.CustomBoolField1)</dd>
+                </div>
+            }
+            @if (Model.collection.CustomBoolState2 == CollectionFieldState.TRUE)
+            {
+                <div class="form-group d-flex">
+                    <dt class="me-2">@Html.DisplayFor(model => model.collection.CustomBoolName2)</dt>
+                    <dd>@Html.DisplayFor(model => model.item.CustomBoolField2)</dd>
+                </div>
+            }
+            @if (Model.collection.CustomBoolState3 == CollectionFieldState.TRUE)
+            {
+                <div class="form-group d-flex">
+                    <dt class="me-2">@Html.DisplayFor(model => model.collection.CustomBoolName3)</dt>
+                    <dd>@Html.DisplayFor(model => model.item.CustomBoolField3)</dd>
+                </div>
+            }
+        </div>
+        <div class="w-auto p-0" style="min-width:100px">
+            @if (Model.collection.CustomDateState1 == CollectionFieldState.TRUE)
+            {
+                <div class="form-group d-flex">
+                    <dt class="me-2">@Html.DisplayFor(model => model.collection.CustomDateName1)</dt>
+                    <dd>@Html.DisplayFor(model => model.item.CustomDateField1)</dd>
+                </div>
+            }
+            @if (Model.collection.CustomDateState2 == CollectionFieldState.TRUE)
+            {
+                <div class="form-group d-flex">
+                    <dt class="me-2">@Html.DisplayFor(model => model.collection.CustomDateName2)</dt>
+                    <dd>@Html.DisplayFor(model => model.item.CustomDateField2)</dd>
+                </div>
+            }
+            @if (Model.collection.CustomDateState3 == CollectionFieldState.TRUE)
+            {
+                <div class="form-group d-flex">
+                    <dt class="me-2">@Html.DisplayFor(model => model.collection.CustomDateName3)</dt>
+                    <dd>@Html.DisplayFor(model => model.item.CustomDateField3)</dd>
+                </div>
+            }
+        </div>
+        <div class="w-100 p-0 mb-2" style="min-width:100px">
+
+            @if (Model.collection.CustomTextState1 == CollectionFieldState.TRUE)
+            {
+                <div class="form-group">
+                    <dt>
+                        @Html.DisplayFor(model => model.collection.CustomTextName1)
+                    </dt>
+                    @Markdown.ParseHtmlString(HtmlUtils.SanitizeHtml(Model.item.CustomTextField1))
+                </div>
+            }
+            @if (Model.collection.CustomTextState2 == CollectionFieldState.TRUE)
+            {
+                <div class="form-group">
+                    <dt>
+                        @Html.DisplayFor(model => model.collection.CustomTextName2)
+                    </dt>
+                    @Markdown.ParseHtmlString(HtmlUtils.SanitizeHtml(Model.item.CustomTextField2))
+                </div>
+            }
+            @if (Model.collection.CustomTextState3 == CollectionFieldState.TRUE)
+            {
+                <div class="form-group">
+                    <dt>
+                        @Html.DisplayFor(model => model.collection.CustomTextName3)
+                    </dt>
+                    @Markdown.ParseHtmlString(HtmlUtils.SanitizeHtml(Model.item.CustomTextField3))
+                </div>
+            }
+        </div>
+    </div>
+    <partial name="_StaticTagsCloud" model="Model.item.Tags"></partial>
+</div>
+<div>
+    <a asp-action="View" asp-controller="Collection" asp-route-id="@Model.collection.EntireCollectionViewModelId">Back to List</a>
+</div>
