@@ -221,6 +221,8 @@ project.lock.json
 # UWP Projects
 AppPackages/
 
+# Secret files
+collectionsmanager-415818-5bdff89bf43e.json
 #####
 # End of core ignore list, below put you custom 'per project' settings (patterns or path)
 #####
