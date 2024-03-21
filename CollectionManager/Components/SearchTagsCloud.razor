@@ -1,0 +1,35 @@
+﻿@inject ITagService tagService
+
+<div class="container border-1 rounded-2 card">
+    <input class="form-control mt-2" type="text" placeholder="Input tags" @bind-value="SearchTagText" @bind-value:event="oninput" @onchange="async ()=>{await UpdateAvailableTags();}" @onkeypress="async ()=>{await UpdateAvailableTags();}" />
+    <div class="container ">
+        <p class="p-0 m-0">Tags:</p>
+        <div class="d-flex flex-wrap">
+            @foreach (var tag in availableTags)
+            {
+                <a href="/Home/Search/@tag.TagModelId" class="card border-1 rounded-pill btn btn-light m-1 px-2 py-0">@tag.Tag</a>
+            }
+        </div>
+    </div>
+</div>
+@code {
+    public IEnumerable<TagModel> allTags { get; set; } = new List<TagModel>();
+    public IEnumerable<TagModel> availableTags { get; set; } = new List<TagModel>();
+
+    public string SearchTagText { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        SearchTagText = string.Empty;
+        allTags = await tagService.GetAll();
+        await UpdateAvailableTags();
+    }
+
+    public async Task UpdateAvailableTags(int amount=20)
+    {
+        if (SearchTagText != null)
+            availableTags = allTags.Where(x => x.AbsTag.Contains(SearchTagText.Trim().ToUpper())).Take(amount);
+        else
+            availableTags = allTags.Take(amount);
+    }
+}

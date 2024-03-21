@@ -3,11 +3,14 @@
 @{
     ViewData["Title"] = "AppendItem";
 }
-
+@{
+    var culture = Context.Session.GetString("CurrentCulture");
+    System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(culture == null ? "en-US" : culture);
+}
 <div class="d-flex justify-content-between">
-    <h1>Edit @Model.Name</h1>
+    <h1>@Localizer["Edit model"] @Model.Name</h1>
     <div>
-        <a class="btn btn-primary" asp-action="View" asp-controller="Collection" asp-route-id="@Model.CollectionId">Back to List</a>
+        <a class="btn btn-primary" asp-action="View" asp-controller="Collection" asp-route-id="@Model.CollectionId">@Localizer["Back"]</a>
     </div>
 </div>
 
@@ -178,7 +181,7 @@
             <component type="typeof(TagsCloud)" render-mode="ServerPrerendered" param-selectedTags="Model.Tags" />
         </div>
         <div class="form-group">
-            <input type="submit" value="Confirm edition" class="btn btn-primary" />
+            <input type="submit" value="@Localizer["Confirm"]" class="btn btn-primary" />
         </div>
     </form>
 </div>

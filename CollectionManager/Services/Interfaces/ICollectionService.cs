@@ -6,6 +6,7 @@ namespace CollectionManager.Services.Interfaces
     {
         public Task<IEnumerable<EntireCollectionViewModel>> GetByUserId(string userId);
         public Task<EntireCollectionViewModel> GetById(string objId);
+        public Task<IEnumerable<DataCollectionViewModel>> GetBiggestData(int amount);
         public Task Create(EntireCollectionViewModel model);
         public Task CreateData(DataCollectionViewModel model);
         public Task Edit(EntireCollectionViewModel model);

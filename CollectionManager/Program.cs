@@ -4,15 +4,16 @@ using CollectionManager.Data.Repositories;
 using CollectionManager.Data.Interfaces;
 using CollectionManager.Services.Interfaces;
 using CollectionManager.Services;
-using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
-using System.Collections;
-using CollectionManager.Services.Interfaces;
+using CollectionManager.SignalR;
 using AspNetCoreWebApp.CloudStorage;
-using System.Web;
+using Microsoft.AspNetCore.ResponseCompression;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -26,7 +27,25 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+    .AddDataAnnotationsLocalization();
+builder.Services.AddLocalization(options =>
+{
+    options.ResourcesPath = "Resources";
+});
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new[]
+    {
+        new CultureInfo("en-US"),
+        new CultureInfo("pl-PL"),
+    };
+
+    options.SupportedUICultures = supportedCultures;
+    options.SupportedCultures = supportedCultures;
+    options.DefaultRequestCulture = new RequestCulture("en-US");
+});
 
 builder.Services.AddAuthorization(options =>
 {
@@ -66,15 +85,32 @@ builder.Services.AddScoped<ICollectionService, CollectionService>();
 builder.Services.AddScoped<ICollectionItemsRepository, CollectionItemsRepository>();
 builder.Services.AddScoped<ICollectionItemService, CollectionItemService>();
 
+builder.Services.AddScoped<IFulltextRepository, FulltextRepository>();
+builder.Services.AddScoped<ISearchService, SearchService>();
+
 builder.Services.AddScoped<ITagRepository, TagRepository>();
 builder.Services.AddScoped<ITagService, TagService>();
+
+builder.Services.AddScoped<ICommentsRepository, CommentsRepository>();
+builder.Services.AddScoped<ILikesRepository, LikesRepository>();
+builder.Services.AddScoped<ISocialsService, SocialsService>();
 
 builder.Services.AddSingleton<ICloudStorage, GoogleCloudRepository>();
 builder.Services.AddSingleton<ICloudStorageService, CloudStorageService>();
 
 //blazor test
 builder.Services.AddServerSideBlazor();
+builder.Services.AddSignalR();
+
+builder.Services.AddResponseCompression(opts =>
+{
+    opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "application/octet-stream" });
+});
+
+builder.Services.AddSession();
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -102,5 +138,7 @@ app.MapControllerRoute(
 app.MapRazorPages();
 //blazor test
 app.MapBlazorHub();
+app.MapHub<SocialsHub>("/socialHub");
+app.UseSession();
 
 app.Run();

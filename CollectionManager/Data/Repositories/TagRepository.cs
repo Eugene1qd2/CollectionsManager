@@ -51,7 +51,7 @@ namespace CollectionManager.Data.Repositories
 
         public async Task<IEnumerable<TagModel>> GetAll()
         {
-            return _context.Tags != null ? _context.Tags : new List<TagModel>();
+            return await _context.Tags.ToListAsync();
         }
 
         public async Task<TagModel> GetById(string Id)

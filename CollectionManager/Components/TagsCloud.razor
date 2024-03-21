@@ -1,9 +1,9 @@
 ﻿@inject ITagService tagService
-
 <div class="container border-1 rounded-2 card">
-    <h4>TagsCloud</h4>
-    <input class="form-control" type="text" placeholder="Input tags" @bind-value="SearchTagText" @bind-value:event="oninput" @onchange="@UpdateAvailableTags" @onkeypress="@UpdateAvailableTags" />
-    <input class="form-control" type="button" value="Add tag" @onclick="AddUserTag" />
+    <div class="d-flex mt-2">
+        <input class="form-control" id="tagsInput" type="text" placeholder="Input tags" @bind-value="SearchTagText" @bind-value:event="oninput" @onchange="@UpdateAvailableTags" @onkeypress="@UpdateAvailableTags" />
+        <input class="form-control w-25 btn btn-primary" style="min-width:70px" type="button" value="Add tag" @onclick="AddUserTag" />
+    </div>
     <div class="container ">
         <p class="p-0 m-0">Tags:</p>
         <div class="d-flex flex-wrap">
@@ -73,14 +73,17 @@
         }
     }
 
-    private async Task AddUserTag(MouseEventArgs e)
+    private async Task AddUserTag()
     {
         SearchTagText = SearchTagText.Trim();
         if (!string.IsNullOrEmpty(SearchTagText))
         {
-            var ftag = availableTags.First();
-            if (ftag.AbsTag == SearchTagText.ToUpper())
-                await IncludeTag(ftag.TagModelId);
+            if (availableTags.Count() > 0)
+            {
+                var ftag = availableTags.First();
+                if (ftag.AbsTag == SearchTagText.ToUpper())
+                    await IncludeTag(ftag.TagModelId);
+            }
             else
                 selectedTags.Add(new TagModel(SearchTagText, 1));
             SearchTagText = string.Empty;

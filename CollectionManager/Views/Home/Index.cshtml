@@ -1,8 +1,25 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IndexViewModel
+@{
+    var culture = Context.Session.GetString("CurrentCulture");
+    System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(culture == null ? "en-US" : culture);
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container p-0">
+    <div class="navbar">
+        <component type="typeof(SearchTagsCloud)" render-mode="ServerPrerendered" />
+    </div>
+    <div class="card border-1 rounded-2 p-2 mb-2">
+        <h2>@Localizer["BiggestCollections"]:</h2>
+        @foreach (var collection in Model.Collections)
+        {
+            <partial name="_CollectionPartial" model="collection" />
+        }
+    </div>
+    <div class="card border-1 rounded-2 p-2">
+        <h2>@Localizer["LastItems"]:</h2>
+        @foreach (var item in Model.Items)
+        {
+            <partial name="_ItemPartial" model="item" />
+        }
+    </div>
 </div>

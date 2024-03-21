@@ -1,7 +1,10 @@
 ﻿@model List<TagModel>
-
+@{
+    var culture = Context.Session.GetString("CurrentCulture");
+    System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(culture == null ? "en-US" : culture);
+}
 <div class="card container px-2 py-3">
-    <h4>Tags</h4>
+    <h4>@Localizer["Tags"]</h4>
     <div class="d-flex w-100 flex-wrap">
         @foreach (var tag in Model)
         {

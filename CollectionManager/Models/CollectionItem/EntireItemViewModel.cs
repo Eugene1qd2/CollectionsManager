@@ -3,6 +3,7 @@ using CollectionManager.Models.Tag;
 using CollectionManager.Models.Collection;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 
 namespace CollectionManager.Models.CollectionItem
 {
@@ -12,6 +13,8 @@ namespace CollectionManager.Models.CollectionItem
         public string CollectionId { get; set; }
         [Display(Name ="Item name")]
         public string Name { get; set; }
+        [Display(Name ="Creation date")]
+        public DateTime CreationDate { get; set; }
         [Display(Name ="Tags")]
 
         [NotMapped]
@@ -37,10 +40,12 @@ namespace CollectionManager.Models.CollectionItem
             EntireItemViewModelId = Id;
             CollectionId = OwnerId;
             Tags = new List<TagModel>();
+            CreationDate = DateTime.Now;
         }
         public EntireItemViewModel()
         {
             Tags = new List<TagModel>();
+            CreationDate = DateTime.Now;
         }
     }
 }

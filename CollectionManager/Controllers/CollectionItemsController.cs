@@ -1,12 +1,9 @@
 ﻿using CollectionManager.Authorization;
 using CollectionManager.Services.Interfaces;
-using CollectionManager.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using CollectionManager.Models.CollectionItem;
 using CollectionManager.Models.Collection;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace CollectionManager.Controllers
 {
@@ -30,23 +27,23 @@ namespace CollectionManager.Controllers
         public async Task<IActionResult> AppendItem(string Id)
         {
             var collectionOwner = await _collectionService.GetById(Id);
-            if (await _isOwnerAuthorizer.AuthorizeAsync(User, collectionOwner.OwnerId))
-            {
-                return View(new CollectionItemDataModel(Guid.NewGuid().ToString(), Id, collectionOwner));
-            }
-            return RedirectToAction("Index", "Home");
+            if (collectionOwner == null)
+                return NotFound();
+            if (!(await _isOwnerAuthorizer.AuthorizeAsync(User, collectionOwner.OwnerId)))
+                return RedirectToAction("NoAccess", "Home");
+            return View(new CollectionItemDataModel(Guid.NewGuid().ToString(), Id, collectionOwner));
         }
         [HttpPost]
         [Authorize(Policy = "UnlockedPolicy")]
         public async Task<IActionResult> AppendItem(CollectionItemDataModel model)
         {
-            if (ModelState.IsValid)
-            {
-                await _collectionItemService.Create(model);
-                return RedirectToAction("View", "Collection", new { Id = model.CollectionId });
-            }
             model.collection = await _collectionService.GetById(model.CollectionId);
-            return View(model);
+            if (!ModelState.IsValid)
+                return View(model);
+
+            await _collectionItemService.Create(model);
+            return RedirectToAction("View", "Collection", new { Id = model.CollectionId });
+
         }
         [HttpGet]
         [Authorize(Policy = "UnlockedPolicy")]
@@ -63,8 +60,12 @@ namespace CollectionManager.Controllers
         public async Task<IActionResult> DeleteItem(string Id)
         {
             var model = await _collectionItemService.GetById(Id);
-            var collection = await _collectionService.GetById(model.CollectionId);
-            return View(new CollectionItemDataPair(model, collection));
+            if (model != null)
+            {
+                var collection = await _collectionService.GetById(model.CollectionId);
+                return View(new CollectionItemDataPair(model, collection));
+            }
+            return RedirectToAction("NotFound", "Home");
         }
 
         [HttpPost]
@@ -98,7 +99,7 @@ namespace CollectionManager.Controllers
                 return RedirectToAction("View", "Collection", new { Id = model.CollectionId });
             }
             model.collection = await _collectionService.GetById(model.CollectionId);
-            
+
             return View(model);
         }
 

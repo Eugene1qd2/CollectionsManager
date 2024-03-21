@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Cors;
-using System.CodeDom;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CollectionManager.Models.Collection
 {
@@ -11,19 +9,12 @@ namespace CollectionManager.Models.Collection
     }
     public class EntireCollectionViewModel
     {
-        [Display(Name ="Id")]
         public string EntireCollectionViewModelId { get; set; }
-        [Display(Name ="Owner id")]
         public string OwnerId { get; set; }
-        [Display(Name ="Title")]
         public string? Title { get; set; }
-        [Display(Name = "Description")]
         public string? Description { get; set; }
-        [Display(Name = "Theme\\Topic")]
         public string Theme { get; set; }
-        [Display(Name = "Picture link")]
         public string? PictureLink { get; set; }
-        [Display(Name = "Picture name")]
         public string? CloudPictureName { get; set; }
 
         public CollectionFieldState CustomStringState1 { get; set; }

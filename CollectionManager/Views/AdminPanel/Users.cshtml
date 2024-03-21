@@ -3,29 +3,32 @@
 @{
     ViewData["Title"] = "Users";
 }
-
-<h1>Users</h1>
+@{
+    var culture = Context.Session.GetString("CurrentCulture");
+    System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(culture == null ? "en-US" : culture);
+}
+<h1>@Localizer["Users"]</h1>
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                @Localizer["Id"]
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserName)
+                @Localizer["Username"]
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserEmail)
+                @Localizer["Email"]
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserPhone)
+                @Localizer["Phone"]
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserRole)
+                @Localizer["Role"]
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsBlocked)
+                @Localizer["Is Blocked"]
             </th>
             <th></th>
         </tr>
@@ -50,13 +53,13 @@
                     @Html.DisplayFor(modelItem => item.UserRole)
                 </td>
                 <td>
-                    @(item.IsBlocked?"Blocked":"Active")
+                    @(item.IsBlocked ? Localizer["Blocked"] : Localizer["Active"])
                 </td>
                 <td>
-                    <a class="btn btn-danger" asp-action="ChangeLockState" asp-route-id="@item.Id">@(item.IsBlocked?"Unblock":"Block")</a>
-                    <a class="btn btn-dark" asp-action="ChangeAdminRoleState" asp-route-id="@item.Id">@(item.UserRole=="user"?"Make admin":"Un op")</a>
-                    <a class="btn btn-info" asp-action="Profile" asp-route-id="@item.Id" asp-controller="UserCollections">View</a>
-                    <a class="btn btn-danger" asp-action="DeleteUser" asp-route-id="@item.Id">Delete</a>
+                    <a class="btn btn-danger" asp-action="ChangeLockState" asp-route-id="@item.Id">@(item.IsBlocked ? Localizer["Unlock"] : Localizer["Lock"])</a>
+                    <a class="btn btn-dark" asp-action="ChangeAdminRoleState" asp-route-id="@item.Id">@(item.UserRole == "user" ? Localizer["Adm"] : Localizer["Unop"])</a>
+                    <a class="btn btn-info" asp-action="Profile" asp-route-id="@item.Id" asp-controller="UserCollections">@Localizer["View"]</a>
+                    <a class="btn btn-danger" asp-action="DeleteUser" asp-route-id="@item.Id">@Localizer["Delete"]</a>
                 </td>
             </tr>
         }

@@ -1,0 +1,44 @@
+﻿@model SearchViewModel
+
+@if (Model.Collections != null)
+{
+    <h3>Found in Collection:</h3>
+    @foreach (var item in Model.Collections)
+    {
+        <partial name="_CollectionPartial" model="item.collection" />
+    }
+}
+@if (Model.Items != null)
+{
+    <h3>Found in Item:</h3>
+    @foreach (var item in Model.Items)
+    {
+        <partial name="_ItemPartial" model="item.item" />
+    }
+}
+@if (Model.Items != null)
+{
+    <h3>Found in Comment:</h3>
+    @foreach (var item in Model.Comments)
+    {
+        <div class="card border-1 rounded w-100 mb-2">
+            <div class="card-header w-100">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        @item.comment.UserId <small class="opacity-75">(@item.comment.CreationDate)</small>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="card-text">@item.comment.CommentText</p>
+            </div>
+        </div>
+    }
+}
+@if (Model.General != null)
+{
+    @foreach (var item in Model.General)
+    {
+        <partial name="_ItemPartial" model="item" />
+    }
+}

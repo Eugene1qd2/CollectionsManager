@@ -5,20 +5,17 @@ using CollectionManager.Models.CollectionItem;
 using CollectionManager.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace CollectionManager.Controllers
 {
     public class CollectionController : Controller
     {
-        private DataCollectionViewModel currentCollection;
         private readonly ICollectionService _collectionService;
         private readonly IsOwnerAuthorizer _isOwnerAuthorizer;
         private readonly ICollectionItemService _collectionItemService;
         public CollectionController(ICollectionService collectionService, IsOwnerAuthorizer isOwnerAuth, ICollectionItemService collectionItemService)
         {
             _collectionService = collectionService;
-            currentCollection = new DataCollectionViewModel();
             _isOwnerAuthorizer = isOwnerAuth;
             _collectionItemService = collectionItemService;
         }
@@ -27,88 +24,85 @@ namespace CollectionManager.Controllers
         [Authorize(Policy = "UnlockedPolicy")]
         public async Task<IActionResult> Create(string Id)
         {
-            if (await _isOwnerAuthorizer.AuthorizeAsync(HttpContext.User, Id))
+            if (!(await _isOwnerAuthorizer.AuthorizeAsync(HttpContext.User, Id)))
+                return RedirectToAction("NoAccess", "Home");
+            var collection = new DataCollectionViewModel()
             {
-                currentCollection.EntireCollectionViewModelId = Guid.NewGuid().ToString();
-                currentCollection.OwnerId = Id;
-                currentCollection.SetAsOwner = true;
-                return View(currentCollection);
-            }
-            return RedirectToAction("Index", "Home");
+                EntireCollectionViewModelId = Guid.NewGuid().ToString(),
+                OwnerId = Id,
+                SetAsOwner = true
+            };
+            return View(collection);
         }
         [HttpPost]
         [Authorize(Policy = "UnlockedPolicy")]
         public async Task<IActionResult> Create(DataCollectionViewModel model)
         {
-            if (await _isOwnerAuthorizer.AuthorizeAsync(HttpContext.User, model.OwnerId))
-            {
-                if (ModelState.IsValid)
-                {
-                    currentCollection = model;
-                    await _collectionService.CreateData(currentCollection);
-                    return RedirectToAction("Profile", "UserCollections", new { id = currentCollection.OwnerId });
-                }
+            if (!(await _isOwnerAuthorizer.AuthorizeAsync(HttpContext.User, model.OwnerId)))
+                return RedirectToAction("NoAccess", "Home");
+            if (!ModelState.IsValid)
                 return View(model);
-            }
-            return RedirectToAction("Index", "Home");
+
+            await _collectionService.CreateData(model);
+            return RedirectToAction("Profile", "UserCollections", new { id = model.OwnerId });
         }
 
         [HttpGet]
         [Authorize(Policy = "UnlockedPolicy")]
         public async Task<IActionResult> Edit(string Id)
         {
-            if (await _isOwnerAuthorizer.AuthorizeAsync(HttpContext.User, Id))
+            if (!(await _isOwnerAuthorizer.AuthorizeAsync(HttpContext.User, Id)))
+                return RedirectToAction("NoAccess", "Home");
+
+            var collectionViewModel = await _collectionService.GetById(Id);
+            if (collectionViewModel == null)
+                return RedirectToAction("NotFound", "Home");
+            var collection = new DataCollectionViewModel(collectionViewModel)
             {
-                var collectionViewModel = await _collectionService.GetById(Id);
-                if (collectionViewModel != null)
-                {
-                    currentCollection = new DataCollectionViewModel(collectionViewModel);
-                    currentCollection.SetAsOwner = true;
-                    return View(currentCollection);
-                }
-            }
-            return RedirectToAction("Index", "Home");
+                SetAsOwner = true,
+            };
+            return View(collection);
         }
         [HttpPost]
         public async Task<IActionResult> Edit(DataCollectionViewModel model)
         {
-            if (await _isOwnerAuthorizer.AuthorizeAsync(HttpContext.User, model.OwnerId))
-            {
-                if (ModelState.IsValid)
-                {
-                    currentCollection = model;
-                    await _collectionService.EditData(currentCollection);
-                    return RedirectToAction("Profile", "UserCollections", new { id = currentCollection.OwnerId });
-                }
+            if (!(await _isOwnerAuthorizer.AuthorizeAsync(HttpContext.User, model.OwnerId)))
+                return RedirectToAction("NoAccess", "Home");
+            if (!ModelState.IsValid)
                 return View(model);
-            }
-            return RedirectToAction("Index", "Home");
+            await _collectionService.EditData(model);
+            return RedirectToAction("Profile", "UserCollections", new { id = model.OwnerId });
         }
 
         [HttpGet]
         public async Task<IActionResult> View(string Id)
         {
-            //возможно что-то не то
-            var collection = new DataCollectionViewModel(await _collectionService.GetById(Id));
-            collection.SetAsOwner = await _isOwnerAuthorizer.AuthorizeAsync(HttpContext.User, collection.OwnerId);
-            IEnumerable<EntireItemViewModel> items = await _collectionItemService.GetByCollectionId(Id);
-            collection.Items = items.ToList();
-            return View(collection);
+            var collection = await _collectionService.GetById(Id);
+            if (collection == null)
+                return RedirectToAction("NotFound", "Home");
+            var collectionData = new DataCollectionViewModel(collection);
+            collectionData.SetAsOwner = await _isOwnerAuthorizer.AuthorizeAsync(HttpContext.User, collection.OwnerId);
+            collectionData.Items = (await _collectionItemService.GetByCollectionId(Id)).ToList();
+            return View(collectionData);
         }
 
         [HttpGet]
         [Authorize(Policy = "UnlockedPolicy")]
         public async Task<IActionResult> Delete(string Id)
         {
-            var model=await _collectionService.GetById(Id);
+            var model = await _collectionService.GetById(Id);
             if (model == null)
-                return RedirectToAction("Index", "Home"); //ошибка
+                return RedirectToAction("NotFound", "Home");
+            if (!(await _isOwnerAuthorizer.AuthorizeAsync(HttpContext.User, model.OwnerId)))
+                return RedirectToAction("NoAccess", "Home");
             return View(model);
         }
         [HttpPost]
         [Authorize(Policy = "UnlockedPolicy")]
         public async Task<IActionResult> Delete(EntireCollectionViewModel model)
         {
+            if (!(await _isOwnerAuthorizer.AuthorizeAsync(HttpContext.User, model.OwnerId)))
+                return RedirectToAction("NoAccess", "Home");
             await _collectionService.DeleteById(model.EntireCollectionViewModelId);
             return RedirectToAction("Profile", "UserCollections", model.OwnerId);
         }

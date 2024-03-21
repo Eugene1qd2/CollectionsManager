@@ -8,5 +8,9 @@ namespace CollectionManager.Data.Interfaces
         Task<bool> Update(EntireItemViewModel obj);
         Task<bool> DeleteById(string Id);
         IEnumerable<EntireItemViewModel> GetByCollectionId(string collectionId);
+        IEnumerable<EntireItemViewModel> GetSomeLastItems(int amount);
+        Task<IEnumerable<CollectionItemDataPair>> GetSomeLastPairs(int amount);
+        Task<IEnumerable<CollectionItemDataPair>> GetAllPairs();
+        IEnumerable<EntireItemViewModel> GetRange(int startm,int amount);
     }
 }

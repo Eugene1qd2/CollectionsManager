@@ -9,19 +9,17 @@ namespace CollectionManager.Services
     public class CollectionItemService : ICollectionItemService
     {
         ICollectionItemsRepository _collectionItemsRepository;
+        ICollectionsRepository _collectionRepository;
         ITagRepository _tagRepository;
-        public CollectionItemService(ICollectionItemsRepository repository, ITagRepository tagRepository)
+        public CollectionItemService(ICollectionItemsRepository repository, ITagRepository tagRepository,ICollectionsRepository collectionsRepository)
         {
+            _collectionRepository=collectionsRepository;
             _collectionItemsRepository = repository;
             _tagRepository = tagRepository;
         }
 
         public async Task Create(EntireItemViewModel model)
         {
-            if (model == null)
-            {
-                throw new ArgumentNullException("model");
-            }
             await _collectionItemsRepository.Create(model);
             await _tagRepository.SetItemTags(model);
         }
@@ -58,6 +56,18 @@ namespace CollectionManager.Services
             var model= await _collectionItemsRepository.GetById(objId);
             model.Tags=(await _tagRepository.GetByItemId(objId)).ToList();
             return model;  
+        }
+
+        public async Task<IEnumerable<CollectionItemDataPair>> GetSomeLast(int count)
+        {
+            var items = await _collectionItemsRepository.GetSomeLastPairs(count);
+            return items;
+        }
+
+        public async Task<IEnumerable<CollectionItemDataPair>> GetAll()
+        {
+            var items=await _collectionItemsRepository.GetAllPairs();
+            return items;
         }
     }
 }

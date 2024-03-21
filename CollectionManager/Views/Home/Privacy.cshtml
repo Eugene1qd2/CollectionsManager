@@ -1,6 +1,10 @@
 ﻿@{
     ViewData["Title"] = "Privacy Policy";
 }
-<h1>@ViewData["Title"]</h1>
+@{
+    var culture = Context.Session.GetString("CurrentCulture");
+    System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(culture == null ? "en-US" : culture);
+}
+<h1>@Localizer["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<p>@Localizer["PrivacyText"]</p>

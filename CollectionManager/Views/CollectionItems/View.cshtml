@@ -1,7 +1,12 @@
-﻿@model CollectionManager.Models.Collection.CollectionItemDataPair
+﻿@using System.Security.Claims
+@model CollectionManager.Models.Collection.CollectionItemDataPair
 
 @{
     ViewData["Title"] = "View";
+}
+@{
+    var culture = Context.Session.GetString("CurrentCulture");
+    System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(culture == null ? "en-US" : culture);
 }
 <a asp-action="Profile" asp-controller="UserCollections" asp-route-id="@Model.collection.OwnerId">@Model.OwnerName</a>\
 <a asp-action="View" asp-controller="Collection" asp-route-id="@Model.collection.EntireCollectionViewModelId">@Model.collection.Title</a>\
@@ -9,8 +14,9 @@
 <div class="d-flex justify-content-between">
     <h2>@Model.item.Name</h2>
     <div>
-        <a class="btn btn-primary" asp-action="EditItem" asp-controller="CollectionItems" asp-route-id="@Model.item.EntireItemViewModelId">Edit</a>
-        <a class="btn btn-danger" asp-action="DeleteItem" asp-controller="CollectionItems" asp-route-id="@Model.item.EntireItemViewModelId">Delete</a>
+        <a class="btn btn-primary" asp-action="View" asp-controller="Collection" asp-route-id="@Model.collection.EntireCollectionViewModelId">@Localizer["Back"]</a>
+        <a class="btn btn-primary" asp-action="EditItem" asp-controller="CollectionItems" asp-route-id="@Model.item.EntireItemViewModelId">@Localizer["Edit"]</a>
+        <a class="btn btn-danger" asp-action="DeleteItem" asp-controller="CollectionItems" asp-route-id="@Model.item.EntireItemViewModelId">@Localizer["Delete"]</a>
     </div>
 </div>
 <hr />
@@ -142,5 +148,5 @@
     <partial name="_StaticTagsCloud" model="Model.item.Tags"></partial>
 </div>
 <div>
-    <a asp-action="View" asp-controller="Collection" asp-route-id="@Model.collection.EntireCollectionViewModelId">Back to List</a>
-</div>
+        <component type="typeof(ItemSocialSection)" render-mode="ServerPrerendered" param-curItem="@new GeneralItemViewModel(Model.item.EntireItemViewModelId,Model.item.CollectionId,Context.User.FindFirstValue(ClaimTypes.NameIdentifier))" />
+    </div>

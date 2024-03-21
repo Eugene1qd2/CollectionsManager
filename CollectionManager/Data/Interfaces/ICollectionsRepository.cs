@@ -7,5 +7,6 @@ namespace CollectionManager.Data.Interfaces
         Task<bool> Update(EntireCollectionViewModel obj);
         Task<bool> DeleteById(string Id);
         Task<IEnumerable<EntireCollectionViewModel>> GetByUserId(string userId);
+        Task<IEnumerable<DataCollectionViewModel>> GetByItemsCount(int topAmount);
     }
 }

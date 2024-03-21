@@ -3,16 +3,19 @@
 @{
     ViewData["Title"] = "AppendItem";
 }
-
+@{
+    var culture = Context.Session.GetString("CurrentCulture");
+    System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(culture == null ? "en-US" : culture);
+}
 <div class="d-flex justify-content-between">
-    <h1>Create new item</h1>
+    <h1>@Localizer["Create title"]</h1>
     <div>
-        <a class="btn btn-primary" asp-action="View" asp-controller="Collection" asp-route-id="@Model.CollectionId">Back to List</a>
+        <a class="btn btn-primary" asp-action="View" asp-controller="Collection" asp-route-id="@Model.CollectionId">@Localizer["Back"]</a>
     </div>
 </div>
 <hr />
 <div class="container p-0">
-    <form asp-action="AppendItem">
+    <form asp-action="AppendItem" method="post" asp-controller="CollectionItems">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
             <input asp-for="EntireItemViewModelId" class="form-control" hidden />
@@ -176,8 +179,8 @@
             </div>
             <component type="typeof(TagsCloud)" render-mode="ServerPrerendered" param-selectedTags="Model.Tags" />
         </div>
-        <div class="form-group">
-            <input type="submit" value="Create" class="btn btn-primary" />
+        <div class="form-group mt-1">
+            <input type="submit" value="@Localizer["Create"]" class="btn btn-primary" />
         </div>
     </form>
 </div>

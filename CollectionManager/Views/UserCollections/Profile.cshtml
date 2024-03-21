@@ -3,23 +3,26 @@
 @{
     ViewData["Title"] = "Profile";
 }
-
-<h1>Profile</h1>
+@{
+    var culture = Context.Session.GetString("CurrentCulture");
+    System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(culture == null ? "en-US" : culture);
+}
+<h1>@Localizer["Title"]</h1>
 
 <div>
-    <h3>User name: @Model.User.UserName</h3>
-    <h3>Email: @Model.User.UserEmail</h3>
+    <h3>@Localizer["Username"]: @Model.User.UserName</h3>
+    <h3>@Localizer["Email"]: @Model.User.UserEmail</h3>
     <hr />
     @if (Model.SetAsOwner)
     {
-        <a class="btn btn-primary" asp-action="Create" asp-controller="Collection" asp-route-id="@Model.User.Id">Create</a>
+        <a class="btn btn-primary" asp-action="Create" asp-controller="Collection" asp-route-id="@Model.User.Id">@Localizer["Create"]</a>
     }
     <table class="table">
         <thead>
             <tr>
-                <td>Title</td>
-                <td>Theme</td>
-                <td>Options</td>
+                <td>@Localizer["TableTitle"]</td>
+                <td>@Localizer["TableTheme"]</td>
+                <td>@Localizer["TableOptions"]</td>
             </tr>
         </thead>
         <tbody>
@@ -32,8 +35,8 @@
                         <a class="btn btn-info" asp-action="View" asp-controller="Collection" asp-route-id="@item.EntireCollectionViewModelId">View</a>
                         @if (Model.SetAsOwner)
                         {
-                            <a class="btn btn-warning" asp-controller="Collection" asp-action="Edit" asp-route-id="@item.EntireCollectionViewModelId">Edit</a>
-                            <a class="btn btn-danger" asp-controller="Collection" asp-action="Delete" asp-route-id="@item.EntireCollectionViewModelId" asp-route-returnUrl="@Context.Request.Path">Delete</a>
+                            <a class="btn btn-warning" asp-controller="Collection" asp-action="Edit" asp-route-id="@item.EntireCollectionViewModelId">@Localizer["Edit"]</a>
+                            <a class="btn btn-danger" asp-controller="Collection" asp-action="Delete" asp-route-id="@item.EntireCollectionViewModelId" asp-route-returnUrl="@Context.Request.Path">@Localizer["Delete"]</a>
                         }
                     </td>
                 </tr>

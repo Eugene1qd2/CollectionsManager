@@ -63,7 +63,7 @@ namespace CollectionManager.Services
                 model.PictureLink = pictureLink;
             }
             await _collectionsRepository.Update(model);
-        } 
+        }
 
         public async Task<EntireCollectionViewModel> GetById(string objId)
         {
@@ -73,6 +73,12 @@ namespace CollectionManager.Services
         public async Task<IEnumerable<EntireCollectionViewModel>> GetByUserId(string userId)
         {
             return await _collectionsRepository.GetByUserId(userId);
+        }
+
+        public async Task<IEnumerable<DataCollectionViewModel>> GetBiggestData(int amount)
+        {
+            var colls = (await _collectionsRepository.GetByItemsCount(amount)).ToList();
+            return colls;
         }
     }
 }
