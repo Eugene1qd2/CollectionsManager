@@ -23,12 +23,5 @@ namespace CollectionManager.Data
         public DbSet<ItemTagModel>? ItemTags { get; set; }
         public DbSet<CommentModel>? ItemComments { get; set; }
         public DbSet<LikeModel>? ItemLikes { get; set; }
-        public DbSet<FulltextItem>? FulltextStrings { get; set; }
-
-        [DbFunction(name:"SOUNDEX",IsBuiltIn =true)]
-        public string FuzzySearch(string query)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

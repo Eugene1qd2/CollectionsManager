@@ -1,6 +1,7 @@
 ﻿using CollectionManager.Data.Interfaces;
 using CollectionManager.Models.Collection;
 using CollectionManager.Models.CollectionItem;
+using Korzh.EasyQuery.Linq;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol;
 using System.Text;
@@ -10,40 +11,14 @@ namespace CollectionManager.Data.Repositories
     public class CollectionsRepository : ICollectionsRepository
     {
         private readonly ApplicationDbContext _context;
-        private readonly IFulltextRepository _fulltextRepository;
-        public CollectionsRepository(ApplicationDbContext context, IFulltextRepository fulltextRepository)
+        public CollectionsRepository(ApplicationDbContext context)
         {
             _context = context;
-            _fulltextRepository = fulltextRepository;
-        }
-
-        private async Task<string> GetFulltext(EntireCollectionViewModel obj)
-        {
-            StringBuilder sb = new StringBuilder(obj.Title.Trim());
-            sb.Append(obj.Theme);
-            sb.Append(obj.Description);
-            sb.Append(obj.CustomStringName1);
-            sb.Append(obj.CustomStringName2);
-            sb.Append(obj.CustomStringName3);
-            sb.Append(obj.CustomTextName1);
-            sb.Append(obj.CustomTextName2);
-            sb.Append(obj.CustomTextName3);
-            sb.Append(obj.CustomIntName1?.ToString());
-            sb.Append(obj.CustomIntName2?.ToString());
-            sb.Append(obj.CustomIntName3?.ToString());
-            sb.Append(obj.CustomDateName1?.ToString());
-            sb.Append(obj.CustomDateName2?.ToString());
-            sb.Append(obj.CustomDateName3?.ToString());
-            sb.Append(obj.CustomBoolName1?.ToString());
-            sb.Append(obj.CustomBoolName2?.ToString());
-            sb.Append(obj.CustomBoolName3?.ToString());
-            return sb.ToString().ToUpper();
         }
 
         public async Task<bool> Create(EntireCollectionViewModel obj)
         {
             var result = await _context.UserCollections.AddAsync(obj);
-            await _fulltextRepository.Create(new Models.Fulltext.FulltextItem(null, await GetFulltext(obj),"Collection", obj.EntireCollectionViewModelId));
             await _context.SaveChangesAsync();
             return result.State == EntityState.Added;
         }
@@ -53,7 +28,6 @@ namespace CollectionManager.Data.Repositories
             if (obj == null)
                 return false;
             var result = _context.Remove(obj);
-            await _fulltextRepository.Delete(new Models.Fulltext.FulltextItem(null, await GetFulltext(obj), "Collection", obj.EntireCollectionViewModelId));
             await _context.SaveChangesAsync();
             return result.State == EntityState.Deleted;
         }
@@ -101,9 +75,15 @@ namespace CollectionManager.Data.Repositories
         public async Task<bool> Update(EntireCollectionViewModel obj)
         {
             var result = _context.Update(obj);
-            await _fulltextRepository.Edit(new Models.Fulltext.FulltextItem(null, await GetFulltext(obj), "Collection", obj.EntireCollectionViewModelId));
             await _context.SaveChangesAsync();
             return result.State == EntityState.Modified;
+        }
+        public async Task<IEnumerable<DataCollectionViewModel>> FulltextSearch(string query)
+        {
+            return (await _context.UserCollections.FullTextSearchQuery(query).ToListAsync()).Select(x => new DataCollectionViewModel(x)
+            {
+                ItemsCount = _context.CollectionItems.Count(y => y.CollectionId == x.EntireCollectionViewModelId)
+            });
         }
     }
 }

@@ -85,7 +85,6 @@ builder.Services.AddScoped<ICollectionService, CollectionService>();
 builder.Services.AddScoped<ICollectionItemsRepository, CollectionItemsRepository>();
 builder.Services.AddScoped<ICollectionItemService, CollectionItemService>();
 
-builder.Services.AddScoped<IFulltextRepository, FulltextRepository>();
 builder.Services.AddScoped<ISearchService, SearchService>();
 
 builder.Services.AddScoped<ITagRepository, TagRepository>();

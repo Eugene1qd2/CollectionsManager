@@ -8,5 +8,6 @@ namespace CollectionManager.Data.Interfaces
         Task<bool> DeleteById(string Id);
         Task<IEnumerable<EntireCollectionViewModel>> GetByUserId(string userId);
         Task<IEnumerable<DataCollectionViewModel>> GetByItemsCount(int topAmount);
+        Task<IEnumerable<DataCollectionViewModel>> FulltextSearch(string query);
     }
 }

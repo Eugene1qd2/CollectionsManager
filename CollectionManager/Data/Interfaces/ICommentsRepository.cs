@@ -8,5 +8,6 @@ namespace CollectionManager.Data.Interfaces
     public interface ICommentsRepository:IBaseRepository<CommentModel>
     {
         Task<IEnumerable<CommentModel>> GetByItemId(string itemId);
+        Task<IEnumerable<CommentModel>> FulltextSearch(string query);
     }
 }

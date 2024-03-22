@@ -1,6 +1,7 @@
 ﻿using CollectionManager.Data.Interfaces;
 using CollectionManager.Models.Collection;
 using CollectionManager.Models.Socials;
+using Korzh.EasyQuery.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,6 +29,11 @@ namespace CollectionManager.Data.Repositories
             var result = _context.Remove(obj);
             await _context.SaveChangesAsync();
             return result.State == EntityState.Deleted;
+        }
+
+        public async Task<IEnumerable<CommentModel>> FulltextSearch(string query)
+        {
+            return await _context.ItemComments.FullTextSearchQuery(query).ToListAsync();
         }
 
         public async Task<IEnumerable<CommentModel>> GetAll()
