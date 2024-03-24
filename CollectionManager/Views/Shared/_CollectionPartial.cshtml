@@ -6,17 +6,16 @@
 <form method="get" asp-action="View" asp-controller="Collection" asp-route-id="@Model.EntireCollectionViewModelId">
     <button class="w-100 card border-1 rounded-2 my-1 btn btn-light p-0" type="submit">
         <div class="row g-0 w-100">
+            <div class="col-md-8">
+                <div class="card-body p-2">
+                        <h3 class="card-title"><b>@Html.DisplayFor(model => model.Title)</b></h3>
+                        <p class="card-text"><b>@Localizer["Category"]:</b> @Html.DisplayFor(model => model.Theme)</p>
+                        <small class="card-text mb-0 opacity-75"><b>@Localizer["Items Count"]:</b> @Model.ItemsCount</small>
+                </div>
+            </div>
             <div class="col-md-4">
                 <img src="@Model.PictureLink" class="img-fluid rounded">
             </div>
-            <div class="col-md-8">
-                <div class="card-body p-2">
-                    <h3 class="card-title"><b>@Html.DisplayFor(model => model.Title)</b></h3>
-                    <p class="card-text"><b>@Localizer["Category"]:</b> @Html.DisplayFor(model => model.Theme)</p>
-                    <p class="card-text mb-0"><small class="opacity-75"><b>@Localizer["Items Count"]:</b> @Model.ItemsCount</small></p>
-                </div>
-            </div>
         </div>
-
     </button>
 </form>

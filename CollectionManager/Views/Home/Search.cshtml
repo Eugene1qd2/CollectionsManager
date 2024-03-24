@@ -27,23 +27,23 @@
         <h5 class="opacity-50">@Localizer["Nothing"]</h5>
     }
 }
-@if (Model.Items != null)
+@if (Model.Comments != null)
 {
     <h3>@Localizer["ComTitle"]</h3>
     foreach (var item in Model.Comments)
     {
-        <div class="card border-1 rounded w-100 mb-2">
-            <div class="card-header w-100">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        @item.UserId <small class="opacity-75">(@item.CreationDate)</small>
+        <form method="get" asp-action="View" asp-controller="CollectionItems" asp-route-id="@item.ItemId">
+            <button type="submit" class="card border-1 rounded w-100 mb-2 p-0 btn btn-light">
+                <div class="card-header w-100">
+                    <div class="d-flex justify-content-between">
+                        <a class="card-link" asp-action="Profile" asp-controller="UserCollections" asp-route-id="@item.UserId">@item.Username</a> <small class="opacity-75">(@item.CreationDate)</small>
                     </div>
                 </div>
-            </div>
-            <div class="card-body">
-                <p class="card-text">@item.CommentText</p>
-            </div>
-        </div>
+                <div class="card-body">
+                    <p class="card-text">@item.CommentText</p>
+                </div>
+            </button>
+        </form>
     }
     if (Model.Comments.Count() == 0)
     {
@@ -52,6 +52,10 @@
 }
 @if (Model.General != null)
 {
+    if (Model.searchTag != null)
+    {
+        <h3>@Localizer["ItemsWith"] (@Model.searchTag) @Localizer["Tag"]</h3>
+    }
     foreach (var item in Model.General)
     {
         <partial name="_ItemPartial" model="item" />

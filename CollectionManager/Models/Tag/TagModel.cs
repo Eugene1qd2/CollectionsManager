@@ -1,10 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CollectionManager.Models.Tag
 {
     public class TagModel
     {
         public string TagModelId { get; set; }
+        [MaxLength(255, ErrorMessage = "{0} can have a max of {1} characters")]
         public string Tag { get; set; }
         public string AbsTag { get; set; }
 

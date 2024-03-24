@@ -19,8 +19,11 @@ namespace CollectionManager.Models.CollectionItem
 
         [NotMapped]
         public List<TagModel> Tags { get; set; }
+        [MaxLength(255, ErrorMessage = "{0} can have a max of {1} characters")]
         public string? CustomStringField1 { get; set; }
+        [MaxLength(255, ErrorMessage = "{0} can have a max of {1} characters")]
         public string? CustomStringField2 { get; set; }
+        [MaxLength(255, ErrorMessage = "{0} can have a max of {1} characters")]
         public string? CustomStringField3 { get; set; }
         public int? CustomIntField1 { get; set; }
         public int? CustomIntField2 { get; set; }

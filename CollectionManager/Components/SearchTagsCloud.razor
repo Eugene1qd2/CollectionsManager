@@ -7,7 +7,10 @@
         <div class="d-flex flex-wrap">
             @foreach (var tag in availableTags)
             {
-                <a href="/Home/Search/@tag.TagModelId" class="card border-1 rounded-pill btn btn-light m-1 px-2 py-0">@tag.Tag</a>
+                <form method="post" action="Home/Search">
+                    <input name="tagId" value="@tag.TagModelId" type="text" hidden />
+                    <input type="submit" value="@tag.Tag" class="card border-1 rounded-pill btn btn-light m-1 px-2 py-0" />
+                </form>
             }
         </div>
     </div>

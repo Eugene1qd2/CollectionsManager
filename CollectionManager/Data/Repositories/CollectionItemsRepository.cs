@@ -4,6 +4,7 @@ using CollectionManager.Models.CollectionItem;
 using CollectionManager.Models.Fulltext;
 using Korzh.EasyQuery.Linq;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging.Signing;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -104,6 +105,18 @@ namespace CollectionManager.Data.Repositories
         {
             var items = (await _context.CollectionItems.FullTextSearchQuery(query).ToListAsync()).Select(x=>x.EntireItemViewModelId);
             return await GetAllPairs(items);
+        }
+
+        public async Task<IEnumerable<CollectionItemDataPair>> GetByTagIdPair(string tagId)
+        {
+            var res = await(from tg in _context.ItemTags
+                            where tg.TagModelId==tagId
+                            join it in _context.CollectionItems
+                            on tg.ItemId equals it.EntireItemViewModelId
+                            join cl in _context.UserCollections
+                            on it.CollectionId equals cl.EntireCollectionViewModelId
+                            select new CollectionItemDataPair(it, cl)).ToListAsync();
+            return res;
         }
     }
 }

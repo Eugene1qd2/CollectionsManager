@@ -1,19 +1,28 @@
-﻿@inject NavigationManager navManager
+﻿@using Microsoft.AspNetCore.Identity
+@inject NavigationManager navManager
 @inject ICollectionItemService itemService
 @inject ISocialsService socialsService
 @inject IStringLocalizer<ItemSocialSection> Localizer
-@inject ProtectedSessionStorage ProtectedSessionStore
+@inject UserManager<IdentityUser> userManager
 
 @implements IAsyncDisposable
 
 <div class="container border-1 rounded-2 card">
     <div class="d-flex justify-content-between mt-2">
         <h5>@Localizer["Likes"]: @LikesCount</h5>
-        @if (curItem.UserId != null)
-        {
-            <input type="button" class="btn btn-primary" value="@Localizer["Like"]" @onclick="LeaveLike" />
-        }
+        <div class="h-100 d-flex align-items-center">
+            @if (loader)
+            {
+                <div class="spinner-border text-secondary me-4" role="status">
+                </div>
+            }
+            @if (curItem.UserId != null)
+            {
+                <input type="button" class="btn btn-primary" value=@(IsLiked?"Liked":"Like") @onclick="async()=>{await LeaveLike();}" />
+            }
+        </div>
     </div>
+
     <h5>@Localizer["Comments"]:</h5>
     @if (curItem.UserId != null)
     {
@@ -28,9 +37,7 @@
             <div class="card border-1 rounded w-100 mb-2">
                 <div class="card-header w-100">
                     <div class="d-flex justify-content-between">
-                        <div>
-                            @item.UserId <small class="opacity-75">(@item.CreationDate)</small>
-                        </div>
+                        <a class="nav-link" href="UserCollections\Profile\@item.UserId">@item.Username</a> <small class="opacity-75">(@item.CreationDate)</small>
                         @if (item.UserId == curItem.UserId)
                         {
                             <input type="button" @onclick="async ()=>{await RemoveComment(item.CommentModelId);}" value="@Localizer["Delete"]" class="btn btn-danger py-0" />
@@ -46,6 +53,7 @@
 </div>
 @code {
     private HubConnection? hubConnection;
+    private IdentityUser? curUser;
     public List<CommentModel> comments { get; set; } = new List<CommentModel>();
     [Parameter]
     public GeneralItemViewModel curItem { get; set; }
@@ -53,10 +61,12 @@
     public string CommentString { get; set; }
     public int LikesCount { get; set; }
     public bool IsLiked { get; set; }
+    public bool locker = true;
+    public bool loader = false;
 
     protected override async Task OnInitializedAsync()
     {
-        
+
         hubConnection = new HubConnectionBuilder()
         .WithUrl(navManager.ToAbsoluteUri("/socialHub")).Build();
 
@@ -64,12 +74,14 @@
         {
             comments.Add(comment);
             comments = comments.OrderBy(x => x.CreationDate).ToList();
+            loader = false;
             InvokeAsync(UpdateSocialsData);
         });
         hubConnection.On<CommentModel>("BroadcastCommentDelete", (comment) =>
         {
             var comm = comments.FirstOrDefault(x => x.CommentModelId == comment.CommentModelId);
             comments.Remove(comm);
+            loader = false;
             InvokeAsync(UpdateSocialsData);
         });
 
@@ -81,7 +93,9 @@
     {
         comments = (await socialsService.GetCommentsByItemId(curItem.ItemId)).ToList();
         comments = comments.OrderBy(x => x.CreationDate).ToList();
-        await UpdateSocialsData();
+        IsLiked = await socialsService.CheckIfLiked(curItem.UserId, curItem.ItemId);
+        LikesCount = await socialsService.GetLikesAmount(curItem.ItemId);
+        curUser = await userManager.FindByIdAsync(curItem.UserId);
     }
 
     public async Task UpdateSocialsData()
@@ -97,9 +111,10 @@
         {
             if (!string.IsNullOrEmpty(CommentString))
             {
-                var comment = new CommentModel(curItem.ItemId, curItem.UserId, CommentString);
+                var comment = new CommentModel(curItem.ItemId, curItem.UserId, CommentString) { Username = curUser.UserName };
                 await hubConnection.SendAsync("Broadcast", comment);
                 CommentString = string.Empty;
+                loader = true;
             }
         }
     }
@@ -113,25 +128,31 @@
     }
     private async Task LeaveLike()
     {
-        if (!IsLiked)
+        if (locker)
         {
-            IsLiked = true;
-            LikesCount++;
-            socialsService.CreateLike(new LikeModel(curItem.ItemId, curItem.UserId));
+            locker = false;
+            loader = true;
+            if (!IsLiked)
+            {
+                IsLiked = await socialsService.CreateLike(new LikeModel(curItem.ItemId, curItem.UserId));
+                LikesCount++;
+            }
+            else
+            {
+                IsLiked = await socialsService.RemoveLike(curItem.UserId, curItem.ItemId);
+                LikesCount--;
+            }
+            StateHasChanged();
+            locker = true;
+            loader = false;
         }
-        else
-        {
-            IsLiked = false;
-            LikesCount--;
-            socialsService.RemoveLike(curItem.UserId, curItem.ItemId);
-        }
-        StateHasChanged();
     }
     private async Task RemoveComment(string commentId)
     {
         if (hubConnection is not null)
         {
             await hubConnection.SendAsync("BroadcastDelete", new CommentModel() { CommentModelId = commentId, ItemId = curItem.ItemId });
+            loader = true;
         }
     }
 

@@ -26,21 +26,21 @@
             @if (Model.collection.CustomStringState1 == CollectionFieldState.TRUE)
             {
                 <div class="form-group d-flex">
-                    <dt class="me-1">@Html.DisplayFor(model => model.collection.CustomStringName1) </dt>
+                    <dt class="me-1">@Html.DisplayFor(model => model.collection.CustomStringName1):</dt>
                     <dd>@Html.DisplayFor(model => model.item.CustomStringField1)</dd>
                 </div>
             }
             @if (Model.collection.CustomStringState2 == CollectionFieldState.TRUE)
             {
                 <div class="form-group d-flex">
-                    <dt class="me-1">@Html.DisplayFor(model => model.collection.CustomStringName2) </dt>
+                    <dt class="me-1">@Html.DisplayFor(model => model.collection.CustomStringName2):</dt>
                     <dd>@Html.DisplayFor(model => model.item.CustomStringField2)</dd>
                 </div>
             }
             @if (Model.collection.CustomStringState3 == CollectionFieldState.TRUE)
             {
                 <div class="form-group d-flex">
-                    <dt class="me-1">@Html.DisplayFor(model => model.collection.CustomStringName3) </dt>
+                    <dt class="me-1">@Html.DisplayFor(model => model.collection.CustomStringName3):</dt>
                     <dd>@Html.DisplayFor(model => model.item.CustomStringField3)</dd>
                 </div>
             }
@@ -49,21 +49,21 @@
             @if (Model.collection.CustomIntState1 == CollectionFieldState.TRUE)
             {
                 <div class="form-group d-flex">
-                    <dt class="me-1">@Html.DisplayFor(model => model.collection.CustomIntName1)</dt>
+                    <dt class="me-1">@Html.DisplayFor(model => model.collection.CustomIntName1):</dt>
                     <dd>@Html.DisplayFor(model => model.item.CustomIntField1)</dd>
                 </div>
             }
             @if (Model.collection.CustomIntState2 == CollectionFieldState.TRUE)
             {
                 <div class="form-group d-flex">
-                    <dt class="me-1">@Html.DisplayFor(model => model.collection.CustomIntName2)</dt>
+                    <dt class="me-1">@Html.DisplayFor(model => model.collection.CustomIntName2):</dt>
                     <dd>@Html.DisplayFor(model => model.item.CustomIntField2)</dd>
                 </div>
             }
             @if (Model.collection.CustomIntState3 == CollectionFieldState.TRUE)
             {
                 <div class="form-group d-flex">
-                    <dt class="me-1">@Html.DisplayFor(model => model.collection.CustomIntName3)</dt>
+                    <dt class="me-1">@Html.DisplayFor(model => model.collection.CustomIntName3):</dt>
                     <dd>@Html.DisplayFor(model => model.item.CustomIntField3)</dd>
                 </div>
             }
@@ -72,21 +72,21 @@
             @if (Model.collection.CustomBoolState1 == CollectionFieldState.TRUE)
             {
                 <div class="form-group d-flex">
-                    <dt class="me-2">@Html.DisplayFor(model => model.collection.CustomBoolName1)</dt>
+                    <dt class="me-2">@Html.DisplayFor(model => model.collection.CustomBoolName1):</dt>
                     <dd>@Html.DisplayFor(model => model.item.CustomBoolField1)</dd>
                 </div>
             }
             @if (Model.collection.CustomBoolState2 == CollectionFieldState.TRUE)
             {
                 <div class="form-group d-flex">
-                    <dt class="me-2">@Html.DisplayFor(model => model.collection.CustomBoolName2)</dt>
+                    <dt class="me-2">@Html.DisplayFor(model => model.collection.CustomBoolName2):</dt>
                     <dd>@Html.DisplayFor(model => model.item.CustomBoolField2)</dd>
                 </div>
             }
             @if (Model.collection.CustomBoolState3 == CollectionFieldState.TRUE)
             {
                 <div class="form-group d-flex">
-                    <dt class="me-2">@Html.DisplayFor(model => model.collection.CustomBoolName3)</dt>
+                    <dt class="me-2">@Html.DisplayFor(model => model.collection.CustomBoolName3):</dt>
                     <dd>@Html.DisplayFor(model => model.item.CustomBoolField3)</dd>
                 </div>
             }
@@ -95,21 +95,21 @@
             @if (Model.collection.CustomDateState1 == CollectionFieldState.TRUE)
             {
                 <div class="form-group d-flex">
-                    <dt class="me-2">@Html.DisplayFor(model => model.collection.CustomDateName1)</dt>
+                    <dt class="me-2">@Html.DisplayFor(model => model.collection.CustomDateName1):</dt>
                     <dd>@Html.DisplayFor(model => model.item.CustomDateField1)</dd>
                 </div>
             }
             @if (Model.collection.CustomDateState2 == CollectionFieldState.TRUE)
             {
                 <div class="form-group d-flex">
-                    <dt class="me-2">@Html.DisplayFor(model => model.collection.CustomDateName2)</dt>
+                    <dt class="me-2">@Html.DisplayFor(model => model.collection.CustomDateName2):</dt>
                     <dd>@Html.DisplayFor(model => model.item.CustomDateField2)</dd>
                 </div>
             }
             @if (Model.collection.CustomDateState3 == CollectionFieldState.TRUE)
             {
                 <div class="form-group d-flex">
-                    <dt class="me-2">@Html.DisplayFor(model => model.collection.CustomDateName3)</dt>
+                    <dt class="me-2">@Html.DisplayFor(model => model.collection.CustomDateName3):</dt>
                     <dd>@Html.DisplayFor(model => model.item.CustomDateField3)</dd>
                 </div>
             }
@@ -120,27 +120,33 @@
             {
                 <div class="form-group">
                     <dt>
-                        @Html.DisplayFor(model => model.collection.CustomTextName1)
+                        @Html.DisplayFor(model => model.collection.CustomTextName1):
                     </dt>
-                    @Markdown.ParseHtmlString(HtmlUtils.SanitizeHtml(Model.item.CustomTextField1))
+                    <div class="container fit">
+                        @Markdown.ParseHtmlString(HtmlUtils.SanitizeHtml(Model.item.CustomTextField1, "script|input|iframe|object|embed|form|button"))
+                    </div>
                 </div>
             }
             @if (Model.collection.CustomTextState2 == CollectionFieldState.TRUE)
             {
                 <div class="form-group">
                     <dt>
-                        @Html.DisplayFor(model => model.collection.CustomTextName2)
+                        @Html.DisplayFor(model => model.collection.CustomTextName2):
                     </dt>
-                    @Markdown.ParseHtmlString(HtmlUtils.SanitizeHtml(Model.item.CustomTextField2))
+                    <div class="container fit">
+                        @Markdown.ParseHtmlString(HtmlUtils.SanitizeHtml(Model.item.CustomTextField2, "script|input|iframe|object|embed|form|button"))
+                    </div>
                 </div>
             }
             @if (Model.collection.CustomTextState3 == CollectionFieldState.TRUE)
             {
                 <div class="form-group">
                     <dt>
-                        @Html.DisplayFor(model => model.collection.CustomTextName3)
+                        @Html.DisplayFor(model => model.collection.CustomTextName3):
                     </dt>
-                    @Markdown.ParseHtmlString(HtmlUtils.SanitizeHtml(Model.item.CustomTextField3))
+                    <div class="container fit">
+                        @Markdown.ParseHtmlString(HtmlUtils.SanitizeHtml(Model.item.CustomTextField3, "script|input|iframe|object|embed|form|button"))
+                    </div>
                 </div>
             }
         </div>
@@ -148,5 +154,5 @@
     <partial name="_StaticTagsCloud" model="Model.item.Tags"></partial>
 </div>
 <div>
-        <component type="typeof(ItemSocialSection)" render-mode="ServerPrerendered" param-curItem="@new GeneralItemViewModel(Model.item.EntireItemViewModelId,Model.item.CollectionId,Context.User.FindFirstValue(ClaimTypes.NameIdentifier))" />
-    </div>
+    <component type="typeof(ItemSocialSection)" render-mode="ServerPrerendered" param-curItem="@new GeneralItemViewModel(Model.item.EntireItemViewModelId,Model.item.CollectionId,Context.User.FindFirstValue(ClaimTypes.NameIdentifier))" />
+</div>

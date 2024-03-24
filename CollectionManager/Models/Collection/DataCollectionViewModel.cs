@@ -15,6 +15,7 @@ namespace CollectionManager.Models.Collection
         public virtual IFormFile? ImageFile { get; set; }
         public bool SetAsOwner {  get; set; }
         public List<EntireItemViewModel> Items { get; set; }
+        public bool shouldClearImage { get; set; }
         public int ItemsCount { get; set; }
 
         public DataCollectionViewModel() : base() 

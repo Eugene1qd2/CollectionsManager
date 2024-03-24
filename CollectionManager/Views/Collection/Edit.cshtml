@@ -61,6 +61,10 @@
                         <input asp-for="ImageFile" type="file" class="form-control" placeholder="@Localizer["PickFile"]" />
                         <span asp-validation-for="ImageFile" class="text-danger"></span>
                     </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.shouldClearImage" class="control-label">@Localizer["Clear image"]?</label>
+                        <input asp-for="@Model.shouldClearImage" type="checkbox" class="form-control"/>
+                    </div>
                 </div>
                 <div class="form-group w-100">
                     <label class="control-label">@Localizer["Description"]</label>

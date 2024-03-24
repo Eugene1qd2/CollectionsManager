@@ -16,11 +16,18 @@
                     <dd>@Html.DisplayFor(model => model.item.CustomStringField1)</dd>
                 </div>
             }
-            @if (Model.collection.CustomTextState1 == CollectionFieldState.TRUE)
+            @if (Model.collection.CustomIntState1 == CollectionFieldState.TRUE)
             {
-                <div class="d-flex w-100">
-                    <dt class="me-1">@Html.DisplayFor(model => model.collection.CustomTextName1):</dt>
-                    <dd class="w-100">@Markdown.ParseHtmlString(HtmlUtils.SanitizeHtml(Model.item.CustomTextField1))</dd>
+                <div class="d-flex">
+                    <dt class="text-start me-1">@Html.DisplayFor(model => model.collection.CustomIntName1):</dt>
+                    <dd>@Model.item.CustomIntField1</dd>
+                </div>
+            }
+            @if (Model.collection.CustomDateState1 == CollectionFieldState.TRUE)
+            {
+                <div class="d-flex">
+                    <dt class="text-start me-1">@Html.DisplayFor(model => model.collection.CustomDateName1):</dt>
+                    <dd>@Model.item.CustomDateField1</dd>
                 </div>
             }
             <p class="card-text text-start"><small class="opacity-75">@Localizer["Created"]: @Model.item.CreationDate</small></p>

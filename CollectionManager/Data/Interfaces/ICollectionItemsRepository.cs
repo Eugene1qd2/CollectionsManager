@@ -13,5 +13,6 @@ namespace CollectionManager.Data.Interfaces
         Task<IEnumerable<CollectionItemDataPair>> GetAllPairs();
         IEnumerable<EntireItemViewModel> GetRange(int startm,int amount);
         Task<IEnumerable<CollectionItemDataPair>> FulltextSearch(string query);
+        Task<IEnumerable<CollectionItemDataPair>> GetByTagIdPair(string tagId);
     }
 }

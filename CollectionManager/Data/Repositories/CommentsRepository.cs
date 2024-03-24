@@ -48,7 +48,19 @@ namespace CollectionManager.Data.Repositories
 
         public async Task<IEnumerable<CommentModel>> GetByItemId(string itemId)
         {
-            var result=await _context.ItemComments.Where(x=>x.ItemId== itemId).ToListAsync();
+            var result = from cm in _context.ItemComments
+                         join us in _context.Users
+                         on cm.UserId equals us.Id
+                         where cm.ItemId == itemId
+                         select new CommentModel()
+                         {
+                             ItemId=cm.ItemId,
+                             UserId=cm.UserId,
+                             CommentModelId=cm.CommentModelId,
+                             CommentText=cm.CommentText,
+                             CreationDate=cm.CreationDate,
+                             Username=us.UserName,
+                         };
             return result;
         }
     }

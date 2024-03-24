@@ -123,10 +123,16 @@
   <data name="ComTitle" xml:space="preserve">
     <value>Znalezione w komentarzach:</value>
   </data>
+  <data name="ItemsWith" xml:space="preserve">
+    <value>Przedmioty z</value>
+  </data>
   <data name="ItemTitle" xml:space="preserve">
     <value>Znalezione w przedmiotach:</value>
   </data>
   <data name="Nothing" xml:space="preserve">
     <value>(Nic nie znaleziono)</value>
+  </data>
+  <data name="Tag" xml:space="preserve">
+    <value>tagiem</value>
   </data>
 </root>

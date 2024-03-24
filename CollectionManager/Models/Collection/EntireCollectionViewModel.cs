@@ -11,6 +11,7 @@ namespace CollectionManager.Models.Collection
     {
         public string EntireCollectionViewModelId { get; set; }
         public string OwnerId { get; set; }
+        [MaxLength(255, ErrorMessage = "{0} can have a max of {1} characters")]
         public string? Title { get; set; }
         public string? Description { get; set; }
         public string Theme { get; set; }
@@ -19,6 +20,7 @@ namespace CollectionManager.Models.Collection
 
         public CollectionFieldState CustomStringState1 { get; set; }
         string? _customStringName1;
+        [MaxLength(255, ErrorMessage = "{0} can have a max of {1} characters")]
         public string? CustomStringName1
         {
             get { return _customStringName1; }
@@ -26,6 +28,7 @@ namespace CollectionManager.Models.Collection
         }
         public CollectionFieldState CustomStringState2 { get; set; }
         string? _customStringName2;
+        [MaxLength(255, ErrorMessage = "{0} can have a max of {1} characters")]
         public string? CustomStringName2
         {
             get { return _customStringName2; }
@@ -33,6 +36,7 @@ namespace CollectionManager.Models.Collection
         }
         public CollectionFieldState CustomStringState3 { get; set; }
         string? _customStringName3;
+        [MaxLength(255, ErrorMessage = "{0} can have a max of {1} characters")]
         public string? CustomStringName3
         {
             get { return _customStringName3; }
@@ -40,6 +44,7 @@ namespace CollectionManager.Models.Collection
         }
         public CollectionFieldState CustomIntState1 { get; set; }
         string? _customIntName1;
+        [MaxLength(255, ErrorMessage = "{0} can have a max of {1} characters")]
         public string? CustomIntName1
         {
             get { return _customIntName1; }
@@ -47,6 +52,7 @@ namespace CollectionManager.Models.Collection
         }
         public CollectionFieldState CustomIntState2 { get; set; }
         string? _customIntName2;
+        [MaxLength(255, ErrorMessage = "{0} can have a max of {1} characters")]
         public string? CustomIntName2
         {
             get { return _customIntName2; }
@@ -54,6 +60,7 @@ namespace CollectionManager.Models.Collection
         }
         public CollectionFieldState CustomIntState3 { get; set; }
         string? _customIntName3;
+        [MaxLength(255, ErrorMessage = "{0} can have a max of {1} characters")]
         public string? CustomIntName3
         {
             get { return _customIntName3; }
@@ -61,6 +68,7 @@ namespace CollectionManager.Models.Collection
         }
         public CollectionFieldState CustomTextState1 { get; set; }
         string? _customTextName1;
+        [MaxLength(255, ErrorMessage = "{0} can have a max of {1} characters")]
         public string? CustomTextName1
         {
             get { return _customTextName1; }
@@ -68,6 +76,7 @@ namespace CollectionManager.Models.Collection
         }
         public CollectionFieldState CustomTextState2 { get; set; }
         string? _customTextName2;
+        [MaxLength(255, ErrorMessage = "{0} can have a max of {1} characters")]
         public string? CustomTextName2
         {
             get { return _customTextName2; }
@@ -75,6 +84,7 @@ namespace CollectionManager.Models.Collection
         }
         public CollectionFieldState CustomTextState3 { get; set; }
         string? _customTextName3;
+        [MaxLength(255, ErrorMessage = "{0} can have a max of {1} characters")]
         public string? CustomTextName3
         {
             get { return _customTextName3; }
@@ -82,6 +92,7 @@ namespace CollectionManager.Models.Collection
         }
         public CollectionFieldState CustomBoolState1 { get; set; }
         string? _customBoolName1;
+        [MaxLength(255, ErrorMessage = "{0} can have a max of {1} characters")]
         public string? CustomBoolName1
         {
             get { return _customBoolName1; }
@@ -89,6 +100,7 @@ namespace CollectionManager.Models.Collection
         }
         public CollectionFieldState CustomBoolState2 { get; set; }
         string? _customBoolName2;
+        [MaxLength(255, ErrorMessage = "{0} can have a max of {1} characters")]
         public string? CustomBoolName2
         {
             get { return _customBoolName2; }
@@ -96,6 +108,7 @@ namespace CollectionManager.Models.Collection
         }
         public CollectionFieldState CustomBoolState3 { get; set; }
         string? _customBoolName3;
+        [MaxLength(255, ErrorMessage = "{0} can have a max of {1} characters")]
         public string? CustomBoolName3
         {
             get { return _customBoolName3; }
@@ -103,6 +116,7 @@ namespace CollectionManager.Models.Collection
         }
         public CollectionFieldState CustomDateState1 { get; set; }
         string? _customDateName1;
+        [MaxLength(255, ErrorMessage = "{0} can have a max of {1} characters")]
         public string? CustomDateName1
         {
             get { return _customDateName1; }
@@ -110,6 +124,7 @@ namespace CollectionManager.Models.Collection
         }
         public CollectionFieldState CustomDateState2 { get; set; }
         string? _customDateName2;
+        [MaxLength(255, ErrorMessage = "{0} can have a max of {1} characters")]
         public string? CustomDateName2
         {
             get { return _customDateName2; }
@@ -117,6 +132,7 @@ namespace CollectionManager.Models.Collection
         }
         public CollectionFieldState CustomDateState3 { get; set; }
         string? _customDateName3;
+        [MaxLength(255, ErrorMessage = "{0} can have a max of {1} characters")]
         public string? CustomDateName3
         {
             get { return _customDateName3; }

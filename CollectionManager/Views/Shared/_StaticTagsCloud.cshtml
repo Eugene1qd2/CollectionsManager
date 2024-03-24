@@ -8,7 +8,10 @@
     <div class="d-flex w-100 flex-wrap">
         @foreach (var tag in Model)
         {
-            <a asp-action="Search" asp-controller="Home" asp-route-id="@tag.TagModelId" class="card border-1 rounded-pill btn btn-light m-1 px-2 py-0">@tag.Tag</a>
+            <form asp-action="Search" asp-controller="Home" >
+                <input name="tagId" value="@tag.TagModelId" type="text" hidden/>
+                <input type="submit" value="@tag.Tag" class="card border-1 rounded-pill btn btn-light m-1 px-2 py-0" />
+            </form>
         }
     </div>
 </div>

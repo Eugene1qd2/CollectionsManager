@@ -59,7 +59,7 @@ namespace CollectionManager.Controllers
         }
         [Authorize(Policy = "UnlockedPolicy")]
         [HttpPost]
-        public async Task<IActionResult> Search(string searchString)
+        public async Task<IActionResult> Search(string searchString,string tagId)
         {
             SearchViewModel searchViewModel = new SearchViewModel();
             if (!string.IsNullOrEmpty(searchString))
@@ -67,6 +67,11 @@ namespace CollectionManager.Controllers
                 searchViewModel.Items = await _searchService.SearchItems(searchString);
                 searchViewModel.Collections = await _searchService.SearchCollections(searchString);
                 searchViewModel.Comments = await _searchService.SearchComments(searchString);
+            }else
+            if(tagId != null)
+            {
+                searchViewModel.General = await _collectionItemService.GetByTagId(tagId);
+                searchViewModel.searchTag=(await _tagService.GetById(tagId)).Tag;
             }
             else
                 searchViewModel.General = await _collectionItemService.GetAll();

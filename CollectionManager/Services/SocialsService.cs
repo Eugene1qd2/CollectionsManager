@@ -25,9 +25,10 @@ namespace CollectionManager.Services
             await _commentsRepository.Create(comment);
         }
 
-        public async Task CreateLike(LikeModel Like)
+        public async Task<bool> CreateLike(LikeModel Like)
         {
             await _likesRepository.Create(Like);
+            return true;
         }
 
         public async Task<IEnumerable<CommentModel>> GetCommentsByItemId(string itemId)
@@ -46,10 +47,11 @@ namespace CollectionManager.Services
             await _commentsRepository.Delete(commentToDelete);
         }
 
-        public async Task RemoveLike(string userId, string itemId)
+        public async Task<bool> RemoveLike(string userId, string itemId)
         {
             var likeToDelete = await _likesRepository.GetByUserItemPair(userId, itemId);
             await _likesRepository.Delete(likeToDelete);
+            return false;
         }
     }
 }
