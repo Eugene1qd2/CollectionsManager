@@ -14,9 +14,12 @@
 <div class="d-flex justify-content-between">
     <h2>@Model.item.Name</h2>
     <div>
+        @if (Model.SetAsOwner)
+        {
+            <a class="btn btn-primary" asp-action="EditItem" asp-controller="CollectionItems" asp-route-id="@Model.item.EntireItemViewModelId">@Localizer["Edit"]</a>
+            <a class="btn btn-danger" asp-action="DeleteItem" asp-controller="CollectionItems" asp-route-id="@Model.item.EntireItemViewModelId">@Localizer["Delete"]</a>
+        }
         <a class="btn btn-primary" asp-action="View" asp-controller="Collection" asp-route-id="@Model.collection.EntireCollectionViewModelId">@Localizer["Back"]</a>
-        <a class="btn btn-primary" asp-action="EditItem" asp-controller="CollectionItems" asp-route-id="@Model.item.EntireItemViewModelId">@Localizer["Edit"]</a>
-        <a class="btn btn-danger" asp-action="DeleteItem" asp-controller="CollectionItems" asp-route-id="@Model.item.EntireItemViewModelId">@Localizer["Delete"]</a>
     </div>
 </div>
 <hr />

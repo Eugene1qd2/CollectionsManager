@@ -31,6 +31,7 @@ namespace CollectionManager.Models.Collection
             this.CustomDateField1 = model.CustomDateField1;
             this.CustomDateField2 = model.CustomDateField2;
             this.CustomDateField3 = model.CustomDateField3;
+            this.CreationDate=model.CreationDate;
         }
         public CollectionItemDataModel()
         {

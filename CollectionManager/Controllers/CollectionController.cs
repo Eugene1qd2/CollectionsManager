@@ -51,12 +51,11 @@ namespace CollectionManager.Controllers
         [Authorize(Policy = "UnlockedPolicy")]
         public async Task<IActionResult> Edit(string Id)
         {
-            if (!(await _isOwnerAuthorizer.AuthorizeAsync(HttpContext.User, Id)))
-                return RedirectToAction("NoAccess", "Home");
-
             var collectionViewModel = await _collectionService.GetById(Id);
             if (collectionViewModel == null)
                 return RedirectToAction("NotFound", "Home");
+            if (!(await _isOwnerAuthorizer.AuthorizeAsync(HttpContext.User, collectionViewModel.OwnerId)))
+                return RedirectToAction("NoAccess", "Home");
             var collection = new DataCollectionViewModel(collectionViewModel)
             {
                 SetAsOwner = true,
@@ -64,6 +63,7 @@ namespace CollectionManager.Controllers
             return View(collection);
         }
         [HttpPost]
+        [Authorize(Policy = "UnlockedPolicy")]
         public async Task<IActionResult> Edit(DataCollectionViewModel model)
         {
             if (!(await _isOwnerAuthorizer.AuthorizeAsync(HttpContext.User, model.OwnerId)))
@@ -75,6 +75,7 @@ namespace CollectionManager.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "UnlockedPolicy")]
         public async Task<IActionResult> View(string Id)
         {
             var collection = await _collectionService.GetById(Id);

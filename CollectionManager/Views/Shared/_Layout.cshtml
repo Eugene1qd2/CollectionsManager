@@ -48,7 +48,7 @@
                             }
                         </li>
                         <li class="nav-item d-flex align-items-center">
-                            <a asp-action="ChangeTheme" class="nav-link" asp-route-theme="@isLight" asp-controller="Theme" asp-route-returnUrl="@ViewContext.HttpContext.Request.Path">@(isLight ? "Dark theme" : "Light theme")</a>
+                            <a asp-action="ChangeTheme" class="nav-link" asp-route-theme="@isLight" asp-controller="Theme" asp-route-returnUrl="@ViewContext.HttpContext.Request.Path">@(isLight ? @Localizer["Dark"] : @Localizer["Light"])</a>
                         </li>
                         @if (Context.User.Identity.IsAuthenticated)
                         {

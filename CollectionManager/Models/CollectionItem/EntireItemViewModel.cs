@@ -12,6 +12,7 @@ namespace CollectionManager.Models.CollectionItem
         public string EntireItemViewModelId { get; set; }
         public string CollectionId { get; set; }
         [Display(Name ="Item name")]
+        [MaxLength(255, ErrorMessage = "{0} can have a max of {1} characters")]
         public string Name { get; set; }
         [Display(Name ="Creation date")]
         public DateTime CreationDate { get; set; }

@@ -80,6 +80,7 @@ namespace CollectionManager.Data.Repositories
             var res = (await (from it in _context.CollectionItems
                       join cl in _context.UserCollections
                       on it.CollectionId equals cl.EntireCollectionViewModelId
+                      orderby it.CreationDate descending
                       select new CollectionItemDataPair(it, cl)).ToListAsync()).Take(amount);
             return res;
         }

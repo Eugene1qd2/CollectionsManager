@@ -36,7 +36,7 @@
             <button type="submit" class="card border-1 rounded w-100 mb-2 p-0 btn btn-light">
                 <div class="card-header w-100">
                     <div class="d-flex justify-content-between">
-                        <a class="card-link" asp-action="Profile" asp-controller="UserCollections" asp-route-id="@item.UserId">@item.Username</a> <small class="opacity-75">(@item.CreationDate)</small>
+                        <a class="nav-link" asp-action="Profile" asp-controller="UserCollections" asp-route-id="@item.UserId">@item.UserId</a> <small class="opacity-75">(@item.CreationDate)</small>
                     </div>
                 </div>
                 <div class="card-body">

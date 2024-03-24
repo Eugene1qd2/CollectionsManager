@@ -6,7 +6,7 @@ namespace CollectionManager.Models.Collection
     {
         public EntireCollectionViewModel collection { get; set; }
         public EntireItemViewModel item { get; set; }
-
+        public bool SetAsOwner = false;
         public string? OwnerName { get; set; }   
         public CollectionItemDataPair(EntireItemViewModel itemViewModel,EntireCollectionViewModel collectionViewModel)
         {

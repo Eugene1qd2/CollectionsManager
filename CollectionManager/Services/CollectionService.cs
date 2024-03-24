@@ -9,7 +9,7 @@ namespace CollectionManager.Services
     {
         ICollectionsRepository _collectionsRepository;
         ICloudStorageService _cloudStorageService;
-        public CollectionService(ICollectionsRepository repository,ICloudStorageService cloudStorageService)
+        public CollectionService(ICollectionsRepository repository, ICloudStorageService cloudStorageService)
         {
             _collectionsRepository = repository;
             _cloudStorageService = cloudStorageService;
@@ -21,7 +21,7 @@ namespace CollectionManager.Services
             {
                 throw new ArgumentNullException("model");
             }
-            
+
             await _collectionsRepository.Create(model);
         }
 
@@ -56,6 +56,11 @@ namespace CollectionManager.Services
             {
                 throw new ArgumentNullException("model");
             }
+            if (model.shouldClearImage)
+            {
+                model.PictureLink = null;
+            }
+            else
             if (model.ImageFile != null)
             {
                 model.CloudPictureName = ICloudStorageService.FormFileName(model.Title, model.ImageFile.FileName);

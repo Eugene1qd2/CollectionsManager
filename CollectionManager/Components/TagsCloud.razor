@@ -1,7 +1,7 @@
 ﻿@inject ITagService tagService
 <div class="container border-1 rounded-2 card">
     <div class="d-flex mt-2">
-        <input class="form-control" id="tagsInput" type="text" placeholder="Input tags" @bind-value="SearchTagText" @bind-value:event="oninput" @onchange="@UpdateAvailableTags" @onkeypress="@UpdateAvailableTags" />
+        <input class="form-control" maxlength="255" id="tagsInput" type="text" placeholder="Input tags" @bind-value="SearchTagText" @bind-value:event="oninput" @onchange="@UpdateAvailableTags" @onkeypress="@UpdateAvailableTags" />
         <input class="form-control w-25 btn btn-primary" style="min-width:70px" type="button" value="Add tag" @onclick="AddUserTag" />
     </div>
     <div class="container ">

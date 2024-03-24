@@ -1,12 +1,10 @@
 ﻿using CollectionManager.Authorization;
-using CollectionManager.Models.Collection;
 using CollectionManager.Models.User;
 using CollectionManager.Services;
 using CollectionManager.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace CollectionManager.Controllers
 {

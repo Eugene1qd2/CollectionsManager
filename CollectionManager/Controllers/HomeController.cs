@@ -31,8 +31,8 @@ namespace CollectionManager.Controllers
         public async Task<IActionResult> Index()
         {
             var tags = await _tagService.GetAll();
-            var collection = await _collectionService.GetBiggestData(3);
-            var items = await _collectionItemService.GetSomeLast(5);
+            var collection = await _collectionService.GetBiggestData(5);
+            var items = await _collectionItemService.GetSomeLast(10);
             var model = new IndexViewModel(tags, collection, items);
             return View(model);
         }

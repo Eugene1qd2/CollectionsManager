@@ -12,21 +12,21 @@
         <h2>
             @Html.DisplayFor(model => model.Title)
         </h2>
-        @if (Model.SetAsOwner)
-        {
-            <div>
+        <div>
+            @if (Model.SetAsOwner)
+            {
                 <a class="btn btn-success" asp-action="AppendItem" asp-controller="CollectionItems" asp-route-id="@Model.EntireCollectionViewModelId">@Localizer["Append Item"]</a>
                 <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.EntireCollectionViewModelId">@Localizer["Edit"]</a>
-                <a class="btn btn-primary" asp-action="Profile" asp-controller="UserCollections" asp-route-id="@Model.OwnerId">@Localizer["Back"]</a>
                 <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.EntireCollectionViewModelId">@Localizer["Delete"]</a>
-            </div>
-        }
+            }
+            <a class="btn btn-primary" asp-action="Profile" asp-controller="UserCollections" asp-route-id="@Model.OwnerId">@Localizer["Back"]</a>
+        </div>
     </div>
     <hr />
     <dl class="row">
         <div class="row mb-3">
             <div class="col-6">
-                
+
                 <dt class="col-sm-2">
                     @Localizer["Category"]:
                 </dt>
@@ -43,7 +43,7 @@
         </dt>
         <dd class="col-sm-10">
             <div class="w-100 fit">
-                @Markdown.ParseHtmlString(HtmlUtils.SanitizeHtml(Model.Description,"script|input|iframe|object|embed|form|button"))
+                @Markdown.ParseHtmlString(HtmlUtils.SanitizeHtml(Model.Description, "script|input|iframe|object|embed|form|button"))
             </div>
         </dd>
     </dl>
@@ -51,9 +51,13 @@
         @Localizer["Items"]:
     </dt>
     <div class="row">
-        @foreach(var item in Model.Items)
+        @foreach (var item in Model.Items)
         {
-            <partial name="_ItemPartial" model="new CollectionItemDataPair(item,Model)"/>
+            <partial name="_ItemPartial" model="new CollectionItemDataPair(item,Model)" />
+        }
+        @if (Model.Items.Count == 0)
+        {
+            <div>No items</div>
         }
     </div>
 </div>

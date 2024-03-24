@@ -40,7 +40,6 @@ namespace CollectionManager.Controllers
             model.collection = await _collectionService.GetById(model.CollectionId);
             if (!ModelState.IsValid)
                 return View(model);
-
             await _collectionItemService.Create(model);
             return RedirectToAction("View", "Collection", new { Id = model.CollectionId });
 
@@ -52,7 +51,7 @@ namespace CollectionManager.Controllers
             var model = await _collectionItemService.GetByIdTagged(Id);
             var collection = await _collectionService.GetById(model.CollectionId);
             var name = (await _userManager.FindByIdAsync(collection.OwnerId)).UserName;
-            return View(new CollectionItemDataPair(model, collection, name));
+            return View(new CollectionItemDataPair(model, collection, name) {SetAsOwner= await _isOwnerAuthorizer.AuthorizeAsync(User, collection.OwnerId) });
         }
 
         [HttpGet]
@@ -60,12 +59,12 @@ namespace CollectionManager.Controllers
         public async Task<IActionResult> DeleteItem(string Id)
         {
             var model = await _collectionItemService.GetById(Id);
-            if (model != null)
-            {
-                var collection = await _collectionService.GetById(model.CollectionId);
-                return View(new CollectionItemDataPair(model, collection));
-            }
-            return RedirectToAction("NotFound", "Home");
+            if (model == null)
+                return RedirectToAction("NotFound", "Home");
+            var collection = await _collectionService.GetById(model.CollectionId);
+            if (!(await _isOwnerAuthorizer.AuthorizeAsync(User, collection.OwnerId)))
+                return RedirectToAction("NoAccess", "Home");
+            return View(new CollectionItemDataPair(model, collection));
         }
 
         [HttpPost]
@@ -83,11 +82,9 @@ namespace CollectionManager.Controllers
         {
             var item = new CollectionItemDataModel(await _collectionItemService.GetByIdTagged(Id));
             item.collection = await _collectionService.GetById(item.CollectionId);
-            if (await _isOwnerAuthorizer.AuthorizeAsync(User, item.collection.OwnerId))
-            {
-                return View(item);
-            }
-            return RedirectToAction("NoAccess", "Home");
+            if (!(await _isOwnerAuthorizer.AuthorizeAsync(User, item.collection.OwnerId)))
+                return RedirectToAction("NoAccess", "Home");
+            return View(item);
         }
         [HttpPost]
         [Authorize(Policy = "UnlockedPolicy")]
@@ -99,7 +96,6 @@ namespace CollectionManager.Controllers
                 return RedirectToAction("View", "Collection", new { Id = model.CollectionId });
             }
             model.collection = await _collectionService.GetById(model.CollectionId);
-
             return View(model);
         }
 
