@@ -51,5 +51,10 @@ namespace CollectionManager.Models.CollectionItem
             Tags = new List<TagModel>();
             CreationDate = DateTime.Now;
         }
+        public string GetTagsString()
+        {
+            return string.Join(",", Tags);
+        }
+
     }
 }

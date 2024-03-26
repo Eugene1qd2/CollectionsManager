@@ -5,8 +5,9 @@ namespace CollectionManager.Services.Interfaces
 {
     public interface ICollectionItemService
     {
-        public Task<IEnumerable<EntireItemViewModel>> GetByCollectionId(string userId);
-        public Task<IEnumerable<EntireItemViewModel>> GetByCollectionIdTagged(string userId);
+        public Task<IEnumerable<EntireItemViewModel>> GetByCollectionId(string collectionId);
+        public Task<IEnumerable<CollectionItemDataPair>> GetByCollectionIdPair(string collectionId);
+        public Task<IEnumerable<EntireItemViewModel>> GetByCollectionIdTagged(string uscollectionIderId);
         public Task<EntireItemViewModel> GetById(string objId);
         public Task<IEnumerable<CollectionItemDataPair>> GetSomeLast(int count);
         public Task<IEnumerable<CollectionItemDataPair>> GetAll();

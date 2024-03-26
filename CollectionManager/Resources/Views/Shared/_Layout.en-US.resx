@@ -124,13 +124,13 @@
     <value>CollectionManager</value>
   </data>
   <data name="Dark" xml:space="preserve">
-    <value>Ciemny motyw</value>
+    <value>Dark theme</value>
   </data>
   <data name="Home" xml:space="preserve">
     <value>Home</value>
   </data>
   <data name="Light" xml:space="preserve">
-    <value>Lekki motyw</value>
+    <value>Light theme</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>Login</value>

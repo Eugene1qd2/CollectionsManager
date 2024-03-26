@@ -1,4 +1,5 @@
 ﻿using CollectionManager.Models.CollectionItem;
+using CollectionManager.Models.Socials;
 
 namespace CollectionManager.Models.Collection
 {
@@ -8,6 +9,8 @@ namespace CollectionManager.Models.Collection
         public EntireItemViewModel item { get; set; }
         public bool SetAsOwner = false;
         public string? OwnerName { get; set; }   
+        public int likesCount { get; set; }
+
         public CollectionItemDataPair(EntireItemViewModel itemViewModel,EntireCollectionViewModel collectionViewModel)
         {
             item= itemViewModel;

@@ -135,8 +135,14 @@
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="Export" xml:space="preserve">
+    <value>Export to CSV</value>
+  </data>
   <data name="Items" xml:space="preserve">
     <value>Items</value>
+  </data>
+  <data name="No Items" xml:space="preserve">
+    <value>No items</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>User collection</value>

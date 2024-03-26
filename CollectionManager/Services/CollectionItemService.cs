@@ -75,5 +75,11 @@ namespace CollectionManager.Services
             var items= await _collectionItemsRepository.GetByTagIdPair(tagId);
             return items;
         }
+
+        public async Task<IEnumerable<CollectionItemDataPair>> GetByCollectionIdPair(string collectionId)
+        {
+            var items = await _collectionItemsRepository.GetByCollectionIdPair(collectionId);
+            return items;
+        }
     }
 }

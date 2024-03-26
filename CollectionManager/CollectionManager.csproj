@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CodeBeam.MudBlazor.Extensions" Version="6.9.1" />
     <PackageReference Include="Google.Cloud.Storage.V1" Version="4.8.0" />
     <PackageReference Include="Korzh.EasyQuery.Linq" Version="7.3.1" />
     <PackageReference Include="Localization.AspNetCore.TagHelpers" Version="0.6.0" />
@@ -26,9 +27,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.3" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
-    <PackageReference Include="PhatBrainSoftware.MarkdownEdit" Version="1.0.1" />
     <PackageReference Include="RandomSiteControlsMVC" Version="14.0.7700.1" />
-    <PackageReference Include="TagHelperSamples.Markdown" Version="2.0.49" />
     <PackageReference Include="Westwind.AspNetCore.Markdown" Version="3.16.0" />
     <PackageReference Include="Westwind.Web" Version="2.85.0" />
   </ItemGroup>

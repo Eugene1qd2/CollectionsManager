@@ -119,5 +119,16 @@ namespace CollectionManager.Data.Repositories
                             select new CollectionItemDataPair(it, cl)).ToListAsync();
             return res;
         }
+
+        public async Task<IEnumerable<CollectionItemDataPair>> GetByCollectionIdPair(string collectionId)
+        {
+            var res = await (
+                             from it in _context.CollectionItems
+                             where it.CollectionId == collectionId
+                             join cl in _context.UserCollections
+                             on it.CollectionId equals cl.EntireCollectionViewModelId
+                             select new CollectionItemDataPair(it, cl)).ToListAsync();
+            return res;
+        }
     }
 }

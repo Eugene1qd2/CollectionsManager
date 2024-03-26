@@ -1,10 +1,12 @@
 ﻿using CollectionManager.Authorization;
 using CollectionManager.Data.Interfaces;
+using CollectionManager.Data.Repositories;
 using CollectionManager.Models.Collection;
 using CollectionManager.Models.CollectionItem;
 using CollectionManager.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
 
 namespace CollectionManager.Controllers
 {
@@ -83,7 +85,6 @@ namespace CollectionManager.Controllers
                 return RedirectToAction("NotFound", "Home");
             var collectionData = new DataCollectionViewModel(collection);
             collectionData.SetAsOwner = await _isOwnerAuthorizer.AuthorizeAsync(HttpContext.User, collection.OwnerId);
-            collectionData.Items = (await _collectionItemService.GetByCollectionId(Id)).ToList();
             return View(collectionData);
         }
 
@@ -106,6 +107,14 @@ namespace CollectionManager.Controllers
                 return RedirectToAction("NoAccess", "Home");
             await _collectionService.DeleteById(model.EntireCollectionViewModelId);
             return RedirectToAction("Profile", "UserCollections", model.OwnerId);
+        }
+        [HttpGet]
+        [Authorize(Policy = "UnlockedPolicy")]
+        public async Task<FileResult> Export(string Id)
+        {
+            EntireCollectionViewModel collection = await _collectionService.GetById(Id);
+            var res = await _collectionService.ExportToCsv(collection);
+            return File(Encoding.UTF8.GetBytes(res), "text/csv", collection.Title+".csv");
         }
     }
 }

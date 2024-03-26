@@ -20,6 +20,7 @@
                 <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.EntireCollectionViewModelId">@Localizer["Delete"]</a>
             }
             <a class="btn btn-primary" asp-action="Profile" asp-controller="UserCollections" asp-route-id="@Model.OwnerId">@Localizer["Back"]</a>
+            <a class="btn btn-primary" asp-action="Export" asp-controller="Collection" asp-route-id="@Model.EntireCollectionViewModelId">@Localizer["Export"]</a>
         </div>
     </div>
     <hr />
@@ -51,14 +52,7 @@
         @Localizer["Items"]:
     </dt>
     <div class="row">
-        @foreach (var item in Model.Items)
-        {
-            <partial name="_ItemPartial" model="new CollectionItemDataPair(item,Model)" />
-        }
-        @if (Model.Items.Count == 0)
-        {
-            <div>No items</div>
-        }
+        <component type="typeof(ItemsTable)" render-mode="ServerPrerendered" param-collection="Model"/>
     </div>
 </div>
 

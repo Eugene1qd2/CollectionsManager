@@ -1,0 +1,187 @@
+﻿@inject ICollectionItemService itemService
+@inject ISocialsService socialsService
+
+@using CollectionManager.Models.ViewModels
+@using Microsoft.AspNetCore.Components
+@using MudBlazor.Extensions
+@using MudBlazor.Utilities
+
+<div class="d-flex w-auto align-items-center">
+    <div style="width:120px">Order by:</div>
+    <select @onchange="OrderSelectChanged" class="form-select">
+        <option value="Date">Date</option>
+        <option value="Alphabet">Alphabet</option>
+        <option value="Likes">Likes</option>
+    </select>
+</div>
+<div class="row">
+    <div class="col-md-8">
+        @foreach (var item in resItems)
+        {
+            <Item Model="item" />
+        }
+        @if (resItems.Count == 0)
+        {
+            <h6 class="opacity-75">No items</h6>
+        }
+    </div>
+    <div class="col-md-4 container">
+        <div class=" border-1 rounded card my-1 p-2">
+            <h5>Filter</h5>
+            @if (collection.CustomIntState1 == CollectionFieldState.TRUE)
+            {
+                <div class="w-100">
+                    <p class="my-0 me-2 fw-bold">@collection.CustomIntName1</p>
+                    From <input class="form-control" type="number" min="@collectionItems.Min(x=>x.item.CustomIntField1)" max="@collectionItems.Max(x=>x.item.CustomIntField1)" @bind="@inputModel.IntField1From" />
+                    To <input class="form-control" type="number" min="@collectionItems.Min(x=>x.item.CustomIntField1)" max="@collectionItems.Max(x=>x.item.CustomIntField1)" @bind="@inputModel.IntField1To" />
+                </div>
+            }
+            @if (collection.CustomIntState2 == CollectionFieldState.TRUE)
+            {
+                <div class="w-100">
+                    <p class="my-0 me-2 fw-bold">@collection.CustomIntName2</p>
+                    From <input class="form-control" type="number" min="@collectionItems.Min(x=>x.item.CustomIntField2)" max="@collectionItems.Max(x=>x.item.CustomIntField2)" @bind="@inputModel.IntField2From" />
+                    To <input class="form-control" type="number" min="@collectionItems.Min(x=>x.item.CustomIntField2)" max="@collectionItems.Max(x=>x.item.CustomIntField2)" @bind="@inputModel.IntField2To" />
+                </div>
+            }
+            @if (collection.CustomIntState3 == CollectionFieldState.TRUE)
+            {
+                <div class="w-100">
+                    <p class="my-0 me-2 fw-bold">@collection.CustomIntName3</p>
+                    From <input class="form-control" type="number" min="@collectionItems.Min(x=>x.item.CustomIntField3)" max="@collectionItems.Max(x=>x.item.CustomIntField3)" @bind="@inputModel.IntField3From" />
+                    To <input type="number" class="form-control" min="@collectionItems.Min(x=>x.item.CustomIntField3)" max="@collectionItems.Max(x=>x.item.CustomIntField3)" @bind="@inputModel.IntField3To" />
+                </div>
+            }
+            @if (collection.CustomBoolState1 == CollectionFieldState.TRUE)
+            {
+                <div class="w-100">
+                    <b class="my-0 me-2">@collection.CustomBoolName1</b>
+                    <select class="form-select" @onchange="(e)=>{inputModel.boolField1=boolValChanged(e.Value);}">
+                        <option value="">Any</option>
+                        <option value="true">True</option>
+                        <option value="false">False</option>
+                    </select>
+                </div>
+            }
+            @if (collection.CustomBoolState2 == CollectionFieldState.TRUE)
+            {
+                <div class="w-100">
+                    <b class="my-0 me-2">@collection.CustomBoolName2</b>
+                    <select class="form-select" @onchange="(e)=>{inputModel.boolField2=boolValChanged(e.Value);}">
+                        <option value="">Any</option>
+                        <option value="true">True</option>
+                        <option value="false">False</option>
+                    </select>
+                </div>
+            }
+            @if (collection.CustomBoolState3 == CollectionFieldState.TRUE)
+            {
+                <div class="w-100">
+                    <b class="my-0 me-2">@collection.CustomBoolName3</b>
+                    <select class="form-select" @onchange="(e)=>{inputModel.boolField3=boolValChanged(e.Value);}">
+                        <option value="">Any</option>
+                        <option value="true">True</option>
+                        <option value="false">False</option>
+                    </select>
+                </div>
+            }
+            @if (collection.CustomDateState1 == CollectionFieldState.TRUE)
+            {
+                <div class="w-100">
+                    <p class="my-0 me-2 fw-bold">@collection.CustomDateName1</p>
+                    From <input class="form-control" type="date" @bind="@inputModel.DateField1From" />
+                    To <input class="form-control" type="date" @bind="@inputModel.DateField1To" />
+                </div>
+            }
+            @if (collection.CustomDateState2 == CollectionFieldState.TRUE)
+            {
+                <div class="w-100">
+                    <p class="my-0 me-2 fw-bold">@collection.CustomDateName2</p>
+                    From <input class="form-control" type="date" @bind="@inputModel.DateField2From" />
+                    To <input class="form-control" type="date" @bind="@inputModel.DateField2To" />
+                </div>
+            }
+            @if (collection.CustomDateState3 == CollectionFieldState.TRUE)
+            {
+                <div class="w-100">
+                    <p class="my-0 me-2 fw-bold">@collection.CustomDateName3</p>
+                    From <input class="form-control" type="date" @bind="@inputModel.DateField3From" />
+                    To <input class="form-control" type="date" @bind="@inputModel.DateField3To" />
+                </div>
+            }
+
+            <button class="btn btn-primary mt-2" @onclick="ConfirmFilter">Confirm</button>
+            <button class="btn btn-success mt-2" @onclick="ClearFilter">Clear</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    ItemsTableFilterViewModel inputModel { get; set; } = new ItemsTableFilterViewModel();
+
+    [Parameter]
+    public DataCollectionViewModel collection { get; set; } = new DataCollectionViewModel();
+    public List<CollectionItemDataPair> collectionItems { get; set; } = new List<CollectionItemDataPair>();
+    public List<CollectionItemDataPair> resItems { get; set; } = new List<CollectionItemDataPair>();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        collectionItems = (await itemService.GetByCollectionIdPair(collection.EntireCollectionViewModelId)).OrderBy(x => x.item.CreationDate).ToList();
+        foreach (var item in collectionItems)
+        {
+            item.likesCount = await socialsService.GetLikesAmount(item.item.EntireItemViewModelId);
+        }
+        resItems = collectionItems;
+    }
+    private async Task OrderSelectChanged(ChangeEventArgs e)
+    {
+        switch (e.Value.ToString())
+        {
+            case "Alphabet":
+                resItems = resItems.OrderBy(x => x.item.Name).ToList();
+                StateHasChanged();
+                break;
+            case "Likes":
+                resItems.Sort((x, y) => x.likesCount.CompareTo(y.likesCount));
+                StateHasChanged();
+                break;
+            case "Date":
+                resItems = resItems.OrderBy(x => x.item.CreationDate).ToList();
+                StateHasChanged();
+                break;
+        }
+    }
+    private async Task ConfirmFilter()
+    {
+        resItems = collectionItems;
+        if (inputModel.IntField1From != null && inputModel.IntField1To != null)
+            resItems = resItems.Where(x => x.item.CustomIntField1 <= inputModel.IntField1To && x.item.CustomIntField1 >= inputModel.IntField1From).ToList();
+        if (inputModel.IntField2From != null && inputModel.IntField2To != null)
+            resItems = resItems.Where(x => x.item.CustomIntField2 <= inputModel.IntField2To && x.item.CustomIntField2 >= inputModel.IntField2From).ToList();
+        if (inputModel.IntField3From != null && inputModel.IntField3To != null)
+            resItems = resItems.Where(x => x.item.CustomIntField3 <= inputModel.IntField3To && x.item.CustomIntField3 >= inputModel.IntField3From).ToList();
+        if (inputModel.DateField1From != null && inputModel.DateField1To != null)
+            resItems = resItems.Where(x => x.item.CustomDateField1 <= inputModel.DateField1To && x.item.CustomDateField1 >= inputModel.DateField1From).ToList();
+        if (inputModel.DateField2From != null && inputModel.DateField2To != null)
+            resItems = resItems.Where(x => x.item.CustomDateField2 <= inputModel.DateField2To && x.item.CustomDateField2 >= inputModel.DateField2From).ToList();
+        if (inputModel.DateField3From != null && inputModel.DateField3To != null)
+            resItems = resItems.Where(x => x.item.CustomDateField3 <= inputModel.DateField3To && x.item.CustomDateField3 >= inputModel.DateField3From).ToList();
+        if (inputModel.boolField1 != null)
+            resItems = resItems.Where(x => x.item.CustomBoolField1 == inputModel.boolField1).ToList();
+        if (inputModel.boolField2 != null)
+            resItems = resItems.Where(x => x.item.CustomBoolField2 == inputModel.boolField2).ToList();
+        if (inputModel.boolField3 != null)
+            resItems = resItems.Where(x => x.item.CustomBoolField3 == inputModel.boolField3).ToList();
+    }
+    private async Task ClearFilter()
+    {
+        inputModel = new ItemsTableFilterViewModel();
+        resItems = collectionItems;
+    }
+    private bool? boolValChanged(object val)
+    {
+        if (string.IsNullOrEmpty(val.ToString()))
+            return null;
+        return bool.Parse(val.ToString());
+    }
+}

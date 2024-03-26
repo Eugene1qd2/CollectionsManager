@@ -11,6 +11,7 @@ namespace CollectionManager.Services.Interfaces
         public Task CreateData(DataCollectionViewModel model);
         public Task Edit(EntireCollectionViewModel model);
         public Task EditData(DataCollectionViewModel model);
+        public Task<string> ExportToCsv(EntireCollectionViewModel collection);
         public Task DeleteById(string objId);
     }
 }
