@@ -3,6 +3,7 @@ using CollectionManager.Data.Repositories;
 using CollectionManager.Models.Collection;
 using CollectionManager.Models.CollectionItem;
 using CollectionManager.Services.Interfaces;
+using Ganss.XSS;
 
 namespace CollectionManager.Services
 {
@@ -11,15 +12,21 @@ namespace CollectionManager.Services
         ICollectionItemsRepository _collectionItemsRepository;
         ICollectionsRepository _collectionRepository;
         ITagRepository _tagRepository;
+        IHtmlSanitizer _htmlSanitizer;
+
         public CollectionItemService(ICollectionItemsRepository repository, ITagRepository tagRepository,ICollectionsRepository collectionsRepository)
         {
             _collectionRepository=collectionsRepository;
             _collectionItemsRepository = repository;
             _tagRepository = tagRepository;
+            _htmlSanitizer = new HtmlSanitizer();
         }
 
         public async Task Create(EntireItemViewModel model)
         {
+            model.CustomTextField1= _htmlSanitizer.Sanitize(model.CustomTextField1);
+            model.CustomTextField2= _htmlSanitizer.Sanitize(model.CustomTextField2);
+            model.CustomTextField3= _htmlSanitizer.Sanitize(model.CustomTextField3);
             await _collectionItemsRepository.Create(model);
             await _tagRepository.SetItemTags(model);
         }

@@ -1,6 +1,7 @@
 ﻿using CollectionManager.Models.Collection;
 using CollectionManager.Models.Fulltext;
 using CollectionManager.Models.Socials;
+using System.ComponentModel.DataAnnotations;
 
 namespace CollectionManager.Models.ViewModels
 {
@@ -11,7 +12,9 @@ namespace CollectionManager.Models.ViewModels
         public IEnumerable<CommentModel> Comments { get; set;} 
         public IEnumerable<CollectionItemDataPair> General {  get; set;}
 
+        [MaxLength(255)]
         public string searchString {  get; set;}
+        [MaxLength(255)]
         public string searchTag {  get; set;}
 
         public SearchViewModel() { }

@@ -10,6 +10,7 @@ namespace CollectionManager.Models.Socials
         public string? Username {  get; set; }
         public string ItemId { get; set; }
         public string UserId { get; set; }
+        [MaxLength(4000)]
         public string? CommentText { get; set; }
         public DateTime CreationDate { get; set; }
         public CommentModel() { }

@@ -72,8 +72,8 @@ builder.Services.Configure<SecurityStampValidatorOptions>(options =>
 
 builder.Services.AddAuthentication().AddGoogle(googleOptions =>
 {
-    googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
-    googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
+    googleOptions.ClientId = builder.Configuration.GetSection("ClientId").Value;
+    googleOptions.ClientSecret = builder.Configuration.GetSection("ClientSecret").Value;
 });
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
@@ -97,7 +97,6 @@ builder.Services.AddScoped<ISocialsService, SocialsService>();
 builder.Services.AddSingleton<ICloudStorage, GoogleCloudRepository>();
 builder.Services.AddSingleton<ICloudStorageService, CloudStorageService>();
 
-//blazor test
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSignalR();
 
@@ -133,9 +132,9 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}/{opt_id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
-//blazor test
+app.UseDeveloperExceptionPage();
 app.MapBlazorHub();
 app.MapHub<SocialsHub>("/socialHub");
 app.UseSession();

@@ -3,8 +3,6 @@
 
 @using CollectionManager.Models.ViewModels
 @using Microsoft.AspNetCore.Components
-@using MudBlazor.Extensions
-@using MudBlazor.Utilities
 
 <div class="d-flex w-auto align-items-center">
     <div style="width:120px">Order by:</div>
@@ -177,6 +175,7 @@
     {
         inputModel = new ItemsTableFilterViewModel();
         resItems = collectionItems;
+        StateHasChanged();
     }
     private bool? boolValChanged(object val)
     {

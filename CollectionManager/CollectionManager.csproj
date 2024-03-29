@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CodeBeam.MudBlazor.Extensions" Version="6.9.1" />
     <PackageReference Include="Google.Cloud.Storage.V1" Version="4.8.0" />
+    <PackageReference Include="HtmlSanitizer.NetCore3.1" Version="1.0.0" />
     <PackageReference Include="Korzh.EasyQuery.Linq" Version="7.3.1" />
     <PackageReference Include="Localization.AspNetCore.TagHelpers" Version="0.6.0" />
     <PackageReference Include="Markdig" Version="0.35.0" />

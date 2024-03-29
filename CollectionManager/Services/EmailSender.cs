@@ -32,7 +32,11 @@ namespace CollectionManager.Services
             }
             _logger.LogInformation($"Trying to send message!");
             _logger.LogInformation($"Check key: {Options.SmtpKey}");
+            try
+            {
             await Execute(Options.SmtpKey, Options.SmtpMail, subject, message, toEmail);
+            }
+            catch (Exception ex){}
         }
 
         private void SetupSmtpClient(string apiKey, string sender)

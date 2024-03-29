@@ -4,6 +4,7 @@ using CollectionManager.Models.Collection;
 using CollectionManager.Models.CollectionItem;
 using CollectionManager.Services.Interfaces;
 using System.Text;
+using Ganss.XSS;
 
 namespace CollectionManager.Services
 {
@@ -12,11 +13,13 @@ namespace CollectionManager.Services
         ICollectionsRepository _collectionsRepository;
         ICollectionItemsRepository _collectionItemsRepository;
         ICloudStorageService _cloudStorageService;
+        IHtmlSanitizer _htmlSanitizer;
         public CollectionService(ICollectionsRepository repository, ICloudStorageService cloudStorageService, ICollectionItemsRepository collectionItemsRepository)
         {
             _collectionsRepository = repository;
             _cloudStorageService = cloudStorageService;
             _collectionItemsRepository = collectionItemsRepository;
+            _htmlSanitizer = new HtmlSanitizer();
         }
 
         public async Task Create(EntireCollectionViewModel model)
@@ -25,7 +28,7 @@ namespace CollectionManager.Services
             {
                 throw new ArgumentNullException("model");
             }
-
+            model.Description=_htmlSanitizer.Sanitize(model.Description);
             await _collectionsRepository.Create(model);
         }
 
@@ -41,6 +44,7 @@ namespace CollectionManager.Services
                 var pictureLink = await _cloudStorageService.UploadFile(model.ImageFile, model.CloudPictureName);
                 model.PictureLink = pictureLink;
             }
+            model.Description = _htmlSanitizer.Sanitize(model.Description);
             await _collectionsRepository.Create(model);
         }
 
@@ -130,7 +134,8 @@ namespace CollectionManager.Services
                 string[] item = (string[])items[i];
                 for (int j = 0; j < item.Length; j++)
                 {
-                    sb.Append(item[j] + "; ");
+                    if (item[j] != null)
+                        sb.Append(item[j].Replace(';', ' ').Replace("\r\n","") + "; ");
                 }
                 sb.Append("\r\n");
             }

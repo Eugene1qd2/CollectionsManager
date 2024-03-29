@@ -1,7 +1,7 @@
 ﻿@inject ITagService tagService
 
 <div class="container border-1 rounded-2 card">
-    <input class="form-control mt-2" type="text" placeholder="Input tags" @bind-value="SearchTagText" @bind-value:event="oninput" @onchange="async ()=>{await UpdateAvailableTags();}" @onkeypress="async ()=>{await UpdateAvailableTags();}" />
+    <input class="form-control mt-2" type="text" placeholder="Input tags" @bind-value="SearchTagText" @bind-value:event="oninput" @onchange="async ()=>{await UpdateAvailableTags();}" @onkeypress="async ()=>{await UpdateAvailableTags();}" maxlength="255" />
     <div class="container ">
         <p class="p-0 m-0">Tags:</p>
         <div class="d-flex flex-wrap">
